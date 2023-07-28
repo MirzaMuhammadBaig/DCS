@@ -1,0 +1,22 @@
+{
+  "name": "certification-system-hardhat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Awesome"
+  ],
+  "author": "Muhammad",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/contracts": "^4.9.2",
+    "chai": "^4.3.7",
+    "chai-as-promised": "^7.1.1",
+    "ethers": "^6.6.4",
+    "hardhat": "^2.17.0"
+  }
+}
