@@ -1,26 +1,37 @@
 import React from "react";
-import dotenv from 'dotenv';
-dotenv.config();
+import { ethers } from "ethers";
+const contract_abi = require("../contract/abi.json");
 
 function Hero() {
-  const contractAddress = 'YOUR_CONTRACT_ADDRESS';
-  const contractABI = [];
-  // const provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/your-infura-project-id');
-  // const contract = new ethers.Contract(contractAddress, contractABI, provider);
+  const contractAddress = "0x8ed5e5A03c2d6c1304688f3881e99B42C8ec10B4";
+  // const infuraId = "dd3c1a2fbb314c1490f10d0a2e3c32bd";
 
-  // async function readData() {
-  //   try {
-  //     const result = await contract.someFunction(); // Replace with your contract's function call
-  //     console.log('Result:', result);
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //   }
-  // }
-  
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+  const contract = new ethers.Contract(
+    contractAddress,
+    contract_abi.abi,
+    provider
+  );
+
+  async function registerUser(name) {
+    try {
+      await contract.register_yourself(name);
+      console.log(`Registered user with name: ${name}`);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+  async function handleFormSubmit(event) {
+    event.preventDefault();
+    const name = event.target.elements.name.value;
+    await registerUser(name);
+  }
+
   return (
     <>
-
-      <div class="overflow-hidden " id="#" style={{background: "#27bee3"}}>
+      <div class="overflow-hidden " id="#" style={{ background: "#27bee3" }}>
         <div class="container-fluid col-xxl-8 ps-4">
           <div
             class="row flex-lg-nowrap align-items-center "
@@ -33,13 +44,13 @@ function Hero() {
                 }}
                 src="https://images.unsplash.com/photo-1618004912476-29818d81ae2e?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;ixid=MnwzNzg0fDB8MXxzZWFyY2h8NzV8fHB1cnBsZXxlbnwwfDB8fHwxNjQ3NDcxNjY4&amp;ixlib=rb-1.2.1&amp;q=80&amp;w=1080&amp;h=768"
                 class="d-block mx-lg-auto img-fluid"
-                alt="Photo by Milad Fakurian"
+                alt="hero_image"
                 loading="lazy"
                 srcset="https://images.unsplash.com/photo-1618004912476-29818d81ae2e?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;ixid=MnwzNzg0fDB8MXxzZWFyY2h8NzV8fHB1cnBsZXxlbnwwfDB8fHwxNjQ3NDcxNjY4&amp;ixlib=rb-1.2.1&amp;q=80&amp;w=1080&amp;h=768 1080w, https://images.unsplash.com/photo-1618004912476-29818d81ae2e??crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;ixid=MnwzNzg0fDB8MXxzZWFyY2h8NzV8fHB1cnBsZXxlbnwwfDB8fHwxNjQ3NDcxNjY4&amp;ixlib=rb-1.2.1&amp;q=80&amp;w=150 150w, https://images.unsplash.com/photo-1618004912476-29818d81ae2e??crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;ixid=MnwzNzg0fDB8MXxzZWFyY2h8NzV8fHB1cnBsZXxlbnwwfDB8fHwxNjQ3NDcxNjY4&amp;ixlib=rb-1.2.1&amp;q=80&amp;w=300 300w, https://images.unsplash.com/photo-1618004912476-29818d81ae2e??crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;ixid=MnwzNzg0fDB8MXxzZWFyY2h8NzV8fHB1cnBsZXxlbnwwfDB8fHwxNjQ3NDcxNjY4&amp;ixlib=rb-1.2.1&amp;q=80&amp;w=768 768w, https://images.unsplash.com/photo-1618004912476-29818d81ae2e??crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;ixid=MnwzNzg0fDB8MXxzZWFyY2h8NzV8fHB1cnBsZXxlbnwwfDB8fHwxNjQ3NDcxNjY4&amp;ixlib=rb-1.2.1&amp;q=80&amp;w=1024 1024w"
                 sizes="(max-width: 1080px) 100vw, 1080px"
                 width="2160"
                 height="768"
-                />
+              />
             </div>
             <div class="col-lg-6 col-xl-8 text-center text-lg-start mt-xl-3 pb-3">
               <div class="lc-block mb-5">
@@ -59,7 +70,7 @@ function Hero() {
                 </div>
               </div>
 
-              <form class="row g-3">
+              <form class="row g-3" onSubmit={handleFormSubmit}>
                 <div className="col-8">
                   <label class="form-label">
                     Register yourself to get started
@@ -72,9 +83,10 @@ function Hero() {
                       id="validationDefaultUsername"
                       aria-describedby="inputGroupPrepend2"
                       required
-                      />
+                      name="name"
+                    />
                     <span class="input-group-text">
-                      <button type="button" class="btn btn-primary">
+                      <button type="submit" class="btn btn-primary">
                         Register
                       </button>
                     </span>
@@ -85,7 +97,6 @@ function Hero() {
           </div>
         </div>
       </div>
-
     </>
   );
 }
