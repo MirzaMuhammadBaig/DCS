@@ -2,10 +2,14 @@ import React from "react";
 import { ethers } from "ethers";
 
 function Hero() {
-  const contractAddress = "0x8ed5e5A03c2d6c1304688f3881e99B42C8ec10B4";
+  const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
   const contractABI = require("../contract/abi.json");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  const contract = new ethers.Contract(contractAddress, contractABI.abi, provider);
+  const contract = new ethers.Contract(
+    contractAddress,
+    contractABI.abi,
+    provider
+  );
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -27,16 +31,16 @@ function Hero() {
         alert("Please connect to an Ethereum wallet like MetaMask.");
       }
     } catch (error) {
-      console.error("Error registering:", error);
-      alert(`${error}`)
+      console.error("Error registering:", error.error.data.message);
+      alert(`${error.error.data.message}`);
     }
   };
 
   return (
     <>
-       <div class="overflow-hidden " id="#" style={{ background: "#27bee3" }}>
-         <div class="container-fluid col-xxl-8 ps-4">
-           <div
+      <div class="overflow-hidden " id="#" style={{ background: "#27bee3" }}>
+        <div class="container-fluid col-xxl-8 ps-4">
+          <div
             class="row flex-lg-nowrap align-items-center "
             style={{ height: "100vh" }}
           >

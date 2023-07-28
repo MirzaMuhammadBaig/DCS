@@ -70,7 +70,6 @@ contract certification_system is Ownable {
     string[] private skills;
     string[] private certifications;
     uint256 private user_registered_count;
-    uint256 private providers_count;
 
     // Mappings
     mapping(address => provider_certificate_data[])
@@ -127,13 +126,13 @@ contract certification_system is Ownable {
         string memory _course_name,
         string[] memory _skills
     ) public isProvider {
-        require(
-            !compareStrings(
-                course_Names_skills[msg.sender][_course_name].course_name,
-                _course_name
-            ),
-            "This certificate is already created"
-        );
+        // require(
+        //     !compareStrings(
+        //         course_Names_skills[msg.sender][_course_name].course_name,
+        //         _course_name
+        //     ),
+        //     "This certificate is already created"
+        // );
 
         provider_certificate_data
             memory newCertificate = provider_certificate_data({
@@ -179,10 +178,10 @@ contract certification_system is Ownable {
         address _taker_address
     ) public isProvider {
         require(owner() != _taker_address, "owner can't give certificate.");
-        require(
-            providers_details[msg.sender].providerAddress != _taker_address,
-            "Provider can't give certificate."
-        );
+        // require(
+        //     providers_details[msg.sender].providerAddress != _taker_address,
+        //     "Provider can't give certificate."
+        // );
 
         require(
             check_user_register_data[_taker_address].user_address ==
@@ -198,11 +197,11 @@ contract certification_system is Ownable {
             "Course not found"
         );
 
-        require(
-            _is_user_certified[_taker_address][_course_name]._user_status !=
-                user_status.Certified,
-            "This user is already certified in this course."
-        );
+        // require(
+        //     _is_user_certified[_taker_address][_course_name]._user_status !=
+        //         user_status.Certified,
+        //     "This user is already certified in this course."
+        // );
 
         certificate_detail memory NewCertificate2 = certificate_detail({
             issue_date: block.timestamp,
@@ -270,8 +269,6 @@ contract certification_system is Ownable {
             "You are already provider"
         );
 
-        providers_count++;
-
         providers_details[msg.sender].providerName = check_user_register_data[
             msg.sender
         ].user_name;
@@ -285,12 +282,12 @@ contract certification_system is Ownable {
         public
         isRegistered
     {
-        require(
-            _to != msg.sender ||
-                providers_details[msg.sender].providerAddress != _to ||
-                owner() != _to,
-            "You can't sent at this address"
-        );
+        // require(
+        //     _to != msg.sender ||
+        //         providers_details[msg.sender].providerAddress != _to ||
+        //         owner() != _to,
+        //     "You can't sent at this address"
+        // );
 
         require(
             check_user_register_data[_to].user_address == _to,
@@ -324,11 +321,11 @@ contract certification_system is Ownable {
         isRegistered
     {
         require(_address != msg.sender, "You can't invite yourself.");
-        require(_address != owner(), "You can't invite owner.");
-        require(
-            _address != providers_details[_address].providerAddress,
-            "You can't invite provider."
-        );
+        // require(_address != owner(), "You can't invite owner.");
+        // require(
+        //     _address != providers_details[_address].providerAddress,
+        //     "You can't invite provider."
+        // );
         require(
             check_user_register_data[_address].user_address != _address,
             "This is already a registered user."
@@ -508,7 +505,7 @@ contract certification_system is Ownable {
             foundProviders,
             foundInstitutes,
             foundSkills
-        ); // Return the 2D array of skills
+        );
     }
 
     // Supporting Functions

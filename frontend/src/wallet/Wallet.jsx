@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   EthereumClient,
   w3mConnectors,
@@ -10,8 +10,8 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { arbitrum, mainnet, polygon } from "wagmi/chains";
 
 function Wallet() {
-    const chains = [arbitrum, mainnet, polygon];
-  const projectId = "b66ff5c22b9a39b91fd14e7d27731d42";
+  const chains = [arbitrum, mainnet, polygon];
+  const projectId = "b71e7ea34b76e5477b684bda70d5ea35";
 
   const { publicClient } = configureChains(chains, [
     w3mProvider({ projectId }),
@@ -24,13 +24,13 @@ function Wallet() {
   const ethereumClient = new EthereumClient(wagmiConfig, chains);
   return (
     <>
-    <WagmiConfig config={wagmiConfig}>
+      <WagmiConfig config={wagmiConfig}>
         <Web3Button />
       </WagmiConfig>
 
       <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
     </>
-  )
+  );
 }
 
-export default Wallet
+export default Wallet;
