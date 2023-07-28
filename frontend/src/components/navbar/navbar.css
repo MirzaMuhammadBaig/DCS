@@ -1,0 +1,9 @@
+/* Navbar.css */
+.notification-dot {
+    width: 8px;
+    height: 8px;
+    background-color: red;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  
