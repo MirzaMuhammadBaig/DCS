@@ -126,13 +126,6 @@ contract certification_system is Ownable {
         string memory _course_name,
         string[] memory _skills
     ) public isProvider {
-        // require(
-        //     !compareStrings(
-        //         course_Names_skills[msg.sender][_course_name].course_name,
-        //         _course_name
-        //     ),
-        //     "This certificate is already created"
-        // );
 
         provider_certificate_data
             memory newCertificate = provider_certificate_data({
@@ -178,10 +171,6 @@ contract certification_system is Ownable {
         address _taker_address
     ) public isProvider {
         require(owner() != _taker_address, "owner can't give certificate.");
-        // require(
-        //     providers_details[msg.sender].providerAddress != _taker_address,
-        //     "Provider can't give certificate."
-        // );
 
         require(
             check_user_register_data[_taker_address].user_address ==
@@ -196,12 +185,6 @@ contract certification_system is Ownable {
             ),
             "Course not found"
         );
-
-        // require(
-        //     _is_user_certified[_taker_address][_course_name]._user_status !=
-        //         user_status.Certified,
-        //     "This user is already certified in this course."
-        // );
 
         certificate_detail memory NewCertificate2 = certificate_detail({
             issue_date: block.timestamp,
@@ -282,12 +265,6 @@ contract certification_system is Ownable {
         public
         isRegistered
     {
-        // require(
-        //     _to != msg.sender ||
-        //         providers_details[msg.sender].providerAddress != _to ||
-        //         owner() != _to,
-        //     "You can't sent at this address"
-        // );
 
         require(
             check_user_register_data[_to].user_address == _to,
@@ -321,11 +298,7 @@ contract certification_system is Ownable {
         isRegistered
     {
         require(_address != msg.sender, "You can't invite yourself.");
-        // require(_address != owner(), "You can't invite owner.");
-        // require(
-        //     _address != providers_details[_address].providerAddress,
-        //     "You can't invite provider."
-        // );
+        require(_address != owner(), "You can't invite owner.");
         require(
             check_user_register_data[_address].user_address != _address,
             "This is already a registered user."
@@ -457,17 +430,9 @@ contract certification_system is Ownable {
     function find_certificates(string memory keyword)
         public
         view
-        returns (
-            string[] memory Certificates,
-            address[] memory Providers,
-            string[] memory Institutes,
-            string[][] memory Skills
-        )
+        returns (string[] memory Certificates)
     {
         string[] memory foundCertificates;
-        address[] memory foundProviders;
-        string[] memory foundInstitutes;
-        string[][] memory foundSkills;
         uint256 foundCount = 0;
 
         for (uint256 i = 0; i < certifications.length; i++) {
@@ -477,35 +442,16 @@ contract certification_system is Ownable {
         }
 
         foundCertificates = new string[](foundCount);
-        foundProviders = new address[](foundCount);
-        foundInstitutes = new string[](foundCount);
-        foundSkills = new string[][](foundCount);
         foundCount = 0;
 
         for (uint256 i = 0; i < certifications.length; i++) {
             if (containsIgnoreCase(certifications[i], keyword)) {
                 foundCertificates[foundCount] = certifications[i];
-                address providerAddress = providers_details[msg.sender]
-                    .providerAddress;
-                foundProviders[foundCount] = providerAddress;
-                foundInstitutes[foundCount] = providers_details[providerAddress]
-                    .instituteName;
-
-                string[] storage certificateSkills = course_Names_skills[
-                    msg.sender
-                ][certifications[i]].skills;
-                foundSkills[foundCount] = certificateSkills;
-
                 foundCount++;
             }
         }
 
-        return (
-            foundCertificates,
-            foundProviders,
-            foundInstitutes,
-            foundSkills
-        );
+        return foundCertificates;
     }
 
     // Supporting Functions

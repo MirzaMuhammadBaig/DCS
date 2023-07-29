@@ -1,22 +1,78 @@
 import React from "react";
+import { ethers } from "ethers";
 
 function CreateCert() {
+  const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
+  const contractABI = require("../../contract/abi.json");
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const contract = new ethers.Contract(
+    contractAddress,
+    contractABI.abi,
+    provider
+  );
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const courseName = formData.get("courseName");
+    const skills = formData.get("skills").split(",");
+
+    try {
+      if (window.ethereum) {
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        if (accounts.length === 0) {
+          throw new Error("User denied account access.");
+        }
+
+        const signer = provider.getSigner();
+
+        const tx = await contract
+          .connect(signer)
+          .create_certificate(courseName, skills);
+
+        await tx.wait();
+
+        alert("Certificate Successfully Created");
+      } else {
+        alert("Please connect to a wallet.");
+      }
+    } catch (error) {
+      try {
+        if (
+          error.message &&
+          error.error.data.message.includes(
+            "execution reverted: You are not provider"
+          )
+        ) {
+          alert("You are not provider");
+        } else {
+          alert("'Something went wrong'");
+        }
+      } catch (error) {
+        alert("Something went wrong");
+      }
+    }
+  };
+
   return (
     <>
-      <div className="p-5" style={{background: "#6548bc"}}>
-        <div class="card text-center" style={{background: "#27bee3"}}>
+      <div className="p-5" style={{ background: "#6548bc" }}>
+        <div class="card text-center" style={{ background: "#27bee3" }}>
           {/* <div class="card-header">Become Provider</div> */}
           <div class="card-body">
             <h3 class="card-title">Create Certificate</h3>
             <p class="card-text mt-4">
               After become the provider you can create certificate.
             </p>
-            <form class="row g-3">
+            <form class="row g-3" onSubmit={handleFormSubmit}>
               <div className="col-2"></div>
               <div className="col-8">
                 <div class="input-group">
                   <input
                     type="text"
+                    name="courseName"
                     class="form-control"
                     placeholder="Enter name of certificate/course"
                     id="validationDefaultUsername"
@@ -27,6 +83,7 @@ function CreateCert() {
                 <div class="input-group mt-3">
                   <input
                     type="text"
+                    name="skills"
                     class="form-control"
                     placeholder="Enter skills of certificate/course"
                     id="validationDefaultUsername"
@@ -37,13 +94,13 @@ function CreateCert() {
               </div>
               <div className="col-2"></div>
               <div className="col-5"></div>
-              <button type="button" class="btn btn-primary mt-3 col-2">
+              <button type="submit" class="btn btn-primary mt-3 col-2">
                 Create Certificate
               </button>
               <div className="col-5"></div>
             </form>
           </div>
-          <div class="card-footer text-muted"></div>
+          {/* <div class="card-footer text-muted"></div> */}
         </div>
       </div>
     </>

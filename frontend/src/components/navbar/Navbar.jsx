@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import icon from "../../assets/nav/Logo-PNG.webp";
 import bell from "../../assets/nav/bell.png";
 import { Link } from "react-router-dom";
 import Hero from "../Hero";
-import Search from "../Search";
+import Search from "../Search/Search";
 import About from "../About";
 import Invite from "../Invite";
-import Contact from "../contact/Contact";
 import Footer from "../Footer/Footer";
 import Wallet from "../../wallet/Wallet"
 
@@ -58,11 +57,7 @@ function Navbar() {
                     Invite
                   </a>
                 </li>
-                <li class="nav-item ms-3">
-                  <a class="nav-link" href="#contact">
-                    Contact
-                  </a>
-                </li>
+               
                 <li class="nav-item ms-3">
                   <Link class="nav-link" to="/provider">
                     Provider
@@ -91,7 +86,6 @@ function Navbar() {
       <About/>
       <Search/>
       <Invite/>
-      <Contact/>
       <Footer/>
     </>
   );

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 import Navbar2 from "../navbar/Navbar2";
 import Footer2 from "../Footer/Footer2";
 import { Link } from "react-router-dom";

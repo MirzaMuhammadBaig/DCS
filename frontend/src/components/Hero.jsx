@@ -18,21 +18,45 @@ function Hero() {
 
     try {
       if (window.ethereum) {
-        // Prompt user for account access
-        await window.ethereum.enable();
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+        if (accounts.length === 0) {
+          throw new Error("User denied account access.");
+        }
+
         const signer = provider.getSigner();
 
         const tx = await contract.connect(signer).register_yourself(name);
 
         await tx.wait();
 
-        alert("Registration successful!");
+        alert("Successfully Registered");
       } else {
-        alert("Please connect to an Ethereum wallet like MetaMask.");
+        alert("Please connect to a wallet.");
       }
     } catch (error) {
-      console.error("Error registering:", error.error.data.message);
-      alert(`${error.error.data.message}`);
+      try {
+        if (
+          error.message &&
+          error.error.data.message.includes(
+            "execution reverted: Owner can't do anything"
+          )
+        ) {
+          alert("Owner can't do anything");
+        } else if (
+          error.message &&
+          error.error.data.message.includes(
+            "execution reverted: You have already registered"
+          )
+        ) {
+          alert("You have already registered");
+        } else {
+          alert("'Something went wrong'");
+        }
+      } catch (error) {
+        alert("Something went wrong");
+      }
     }
   };
 
@@ -62,7 +86,7 @@ function Hero() {
             <div class="col-lg-6 col-xl-8 text-center text-lg-start mt-xl-3 pb-3">
               <div class="lc-block mb-5">
                 <div editable="rich">
-                  <h1 class="fw-bold display-4">DIGITAL CERTIFICATE SYSTEM</h1>
+                  <h1 class="fw-bold display-4 ">DIGITAL CERTIFICATE SYSTEM</h1>
                 </div>
               </div>
 
