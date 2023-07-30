@@ -32,7 +32,6 @@ function SearchSkill() {
         const skillData = await contract.connect(signer).find_skills(skill);
 
         setSkillDetails(skillData);
-        console.log(skillData);
       } else {
         alert("Please connect to a wallet.");
       }
@@ -44,33 +43,33 @@ function SearchSkill() {
   return (
     <>
       <div id="search">
-        <div className="ps-5 pe-5">
+        <div className="pt-5">
           <div class="card text-center" style={{ background: "#27bee3" }}>
-            {/* <div class="card-header">Become Provider</div> */}
             <div class="card-body">
-              <h3 class="card-title">Skills</h3>
-              <p class="card-text mt-4">You can find skills.</p>
-              <form class="row g-3" onSubmit={handleFormSubmit}>
-                <div className="col-2"></div>
-                <div className="col-8">
-                  <div class="input-group mt-3">
-                    <input
-                      type="text"
-                      name="skill"
-                      class="form-control"
-                      placeholder="skill name"
-                      id="validationDefaultUsername"
-                      aria-describedby="inputGroupPrepend2"
-                      required
-                    />
+              <h3 class="card-title mb-3">Skills</h3>
+              <p class="card-text">You can find skills.</p>
+              <form onSubmit={handleFormSubmit}>
+                <div className="row g-3">
+                  <div className="col-2"></div>
+                  <div className="col-8">
+                    <div class="input-group mt-3">
+                      <input
+                        type="text"
+                        name="skill"
+                        class="form-control"
+                        placeholder="skill name"
+                        id="validationDefaultUsername"
+                        aria-describedby="inputGroupPrepend2"
+                        required
+                      />
+                    </div>
                   </div>
+                  <div className="col-2"></div>
                 </div>
-                <div className="col-2"></div>
-                <div className="col-5"></div>
-                <button type="submit" class="btn btn-primary mt-3 col-2">
+
+                <button type="submit" class="btn btn-primary mt-3">
                   Search
                 </button>
-                <div className="col-5"></div>
               </form>
             </div>
             {skillDetails ? (

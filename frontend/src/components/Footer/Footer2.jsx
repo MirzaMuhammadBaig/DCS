@@ -1,12 +1,15 @@
 import React from "react";
-import "./footer.css";
+import { Link } from "react-router-dom";
+
 import icon from "../../assets/nav/Logo-PNG.webp";
+
 import { FaTwitterSquare } from "react-icons/fa";
 import { FaRedditSquare } from "react-icons/fa";
 import { AiFillFacebook } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa";
 import { FaReact } from "react-icons/fa";
-import { Link } from "react-router-dom";
+
+import "./footer.css";
 
 const Footer = () => {
   return (
@@ -15,7 +18,11 @@ const Footer = () => {
         <img src={icon} alt="" style={{ height: "90px", width: "180px" }} />
       </Link>
       <br />
-      <a href="#" className="fw-bold" style={{ textDecoration: "none", color:"#352072", fontSize:"20px" }}>
+      <a
+        href="#"
+        className="fw-bold"
+        style={{ textDecoration: "none", color: "#352072", fontSize: "20px" }}
+      >
         FUTURE OF LAB WORK
       </a>
       <ul className="permalinks" style={{ listStyle: "none" }}>

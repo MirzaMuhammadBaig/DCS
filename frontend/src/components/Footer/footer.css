@@ -1,76 +1,67 @@
-.footer{
-    /* background: var(--color-primary); */
-    padding-top: 1rem;
-    text-align: center;
-    background: #e6e6e6;
-    font-size: 0.9rem;
-    /* margin-top: 3rem; */
+.footer {
+  padding-top: 1rem;
+  text-align: center;
+  background: #e6e6e6;
+  font-size: 0.9rem;
 }
 
-.footer a{
-    color: var(--color-bg);
+.footer a {
+  color: var(--color-bg);
 }
 
-.footer__logo{
-    font-size: 2rem;
-    font-weight: 500;
-    /* margin-bottom: 1rem; */
-    display: inline-block;
+.footer__logo {
+  font-size: 2rem;
+  font-weight: 500;
+  display: inline-block;
 }
 
-.permalinks{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-    text-decoration: none;
+.permalinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  text-decoration: none;
 
-    margin: 1rem auto 0.5rem 0;
+  margin: 1rem auto 0.5rem 0;
 }
 
 .footer__socials {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    /* margin-bottom: 1rem; */
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 
-.footer__socials a{
-    /* background: var(--color-bg);
-    color: var(--color-white); */
-    padding: 0.8rem;
-    border-radius: 0.7rem;
-    display: flex;
-    border: 1px solid transparent;
+.footer__socials a {
+  padding: 0.8rem;
+  border-radius: 0.7rem;
+  display: flex;
+  border: 1px solid transparent;
 }
 
-.footer__socials a:hover{
-    background: transparent;
-    color: var(--color-bg);
-    border-color: var(--color-bg);
+.footer__socials a:hover {
+  background: transparent;
+  color: var(--color-bg);
+  border-color: var(--color-bg);
 }
 
-.footer__copyright{
-    margin-top: 0.5rem;
-    color: var(--color-bg);
-    font-size:1rem;
-    padding-bottom: 0.5rem;
-    /* margin-left: 20px; */
+.footer__copyright {
+  margin-top: 0.5rem;
+  color: var(--color-bg);
+  font-size: 1rem;
+  padding-bottom: 0.5rem;
 }
 
-.reaction{
-    position: absolute;
-    font-size: 1.5rem;
-    margin-top: 2px;
-    color: red;
-    
-    
+.reaction {
+  position: absolute;
+  font-size: 1.5rem;
+  margin-top: 2px;
+  color: red;
 }
 
 /* ======================= MEDIA QUERIES (SMALL DEVICES) ===================== */
 @media screen and (max-width: 600px) {
-    .permalinks{
-        flex-direction: column;
-        gap: 1.5rem;
-    }
+  .permalinks {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
 }

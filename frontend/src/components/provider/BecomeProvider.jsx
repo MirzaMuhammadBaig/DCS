@@ -6,7 +6,6 @@ import CreateCert from "./CreateCert";
 import GiveCert from "./GiveCert";
 
 function BecomeProvider() {
-
   const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
   const contractABI = require("../../contract/abi.json");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -70,44 +69,37 @@ function BecomeProvider() {
   return (
     <>
       <Navbar2 />
-      <div className="p-5" style={{ background: "#6548bc" }}>
+      <div className="pt-5 pb-5 ps-1 pe-1" style={{ background: "#6548bc" }}>
         <div class="card text-center" style={{ background: "#27bee3" }}>
-          {/* <div class="card-header">Become Provider</div> */}
           <div class="card-body">
             <h3 class="card-title">Become Provider</h3>
             <p class="card-text mt-4">
               First you will have to connect with wallet then register yourself
               then you can become provider.
             </p>
-            <form class="row g-3" onSubmit={handleFormSubmit}>
-              <div className="col-2"></div>
-              <div className="col-8">
-                <div class="input-group ">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Enter your institute name"
-                    id="validationDefaultUsername"
-                    aria-describedby="inputGroupPrepend2"
-                    required
-                    name="name"
-                  />
-                  {/* <span class="input-group-text">
-                      <button type="button" class="btn btn-primary">
-                        Register
-                      </button>
-                    </span> */}
+            <form class="" onSubmit={handleFormSubmit}>
+              <div className="row g-3">
+                <div className="col-2"></div>
+                <div className="col-8">
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter your institute name"
+                      id="validationDefaultUsername"
+                      aria-describedby="inputGroupPrepend2"
+                      required
+                      name="name"
+                    />
+                  </div>
                 </div>
+                <div className="col-2"></div>
               </div>
-              <div className="col-2"></div>
-              <div className="col-5"></div>
-              <button type="submit" class="btn btn-primary mt-3 col-2">
+              <button type="submit" class="btn btn-primary mt-3">
                 Become Provider
               </button>
-              <div className="col-5"></div>
             </form>
           </div>
-          {/* <div class="card-footer text-muted"></div> */}
         </div>
       </div>
       <CreateCert />

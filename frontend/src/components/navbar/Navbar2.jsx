@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
+
 import icon from "../../assets/nav/Logo-PNG.webp";
 import bell from "../../assets/nav/bell.png";
-import { Link } from "react-router-dom";
-import Wallet from "../../wallet/Wallet"
 
-import "./navbar.css"; // Make sure to import the CSS file for custom styles
+import Wallet from "../../wallet/Wallet";
+
+import "./navbar.css";
 
 function Navbar2() {
   return (
     <>
-      <div style={{background:"#e6e6e6"}}>
+      <div style={{ background: "#e6e6e6" }}>
         <nav class="navbar navbar-expand-lg ps-3 pe-3">
           <div class="container-fluid">
             <Link class="navbar-brand" to="/">
@@ -56,7 +58,7 @@ function Navbar2() {
                   style={{ height: "36px", width: "36px" }}
                 />
               </Link>
-              <Wallet/>
+              <Wallet />
             </div>
           </div>
         </nav>

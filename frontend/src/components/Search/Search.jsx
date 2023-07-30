@@ -7,7 +7,7 @@ import "../../App.css";
 function Search() {
   return (
     <>
-      <div className="p-5 pt-3 " id="search" style={{ background: "#6548bc" }}>
+      <div className="ps-1 pe-1 pt-5 pb-5 " id="search" style={{ background: "#6548bc" }}>
         <h2 class="pb-3 pt-3 fw-bold text-center">Search</h2>
 
         <div class="pb-5 rounded" style={{ background: "#27bee3" }}>
@@ -28,9 +28,3 @@ function Search() {
 }
 
 export default Search;
-
-{
-  /* <p class="card-text">
-  <small>Last updated 3 mins ago</small>
-</p> */
-}

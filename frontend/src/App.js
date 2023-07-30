@@ -1,5 +1,5 @@
 import Navbar from "./components/navbar/Navbar";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import BecomeProvider from "./components/provider/BecomeProvider";
 import Footer from "./components/Footer/Footer";
 import SendCert from "./components/certificate/SendCert";
@@ -7,6 +7,7 @@ import Notification from "./components/notification/Notification"
 import "./App.css"
 
 function App() {
+
   return (
     <div className="App">
       <Routes>

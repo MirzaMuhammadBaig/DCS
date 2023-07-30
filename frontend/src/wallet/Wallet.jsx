@@ -22,12 +22,12 @@ function Wallet() {
     publicClient,
   });
   const ethereumClient = new EthereumClient(wagmiConfig, chains);
+
   return (
     <>
       <WagmiConfig config={wagmiConfig}>
         <Web3Button />
       </WagmiConfig>
-
       <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
     </>
   );
