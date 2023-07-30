@@ -126,7 +126,7 @@ function CheckUserCert() {
                 </p>
                 <p>
                   <span className="fw-bold">Certification Status: </span>
-                  {certificateDetails[11] == 1 ? "Certified" : "Not Certified"}
+                  {certificateDetails[11] === 1 ? "Certified" : "Not Certified"}
                 </p>
                 <p>
                   <span className="fw-bold">Certificate URL: </span>

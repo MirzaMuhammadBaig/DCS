@@ -91,12 +91,12 @@ function IsUserCertified() {
             <div class="card-footer pt-4">
               <p>
                 <span className="fw-bold">User Status: </span>
-                {certificateDetails == 1 ? "Certified" : "Not Certified"}
+                {certificateDetails === 1 ? "Certified" : "Not Certified"}
               </p>
             </div>
           ) : (
             <p>
-              {certificateDetails == 0 ? (
+              {certificateDetails === 0 ? (
                 <div class="card-footer pt-4">
                   <span className="fw-bold">
                     User Status:{" "}

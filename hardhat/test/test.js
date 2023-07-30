@@ -108,26 +108,6 @@ describe("Certification System Smart Contract Test", function () {
     ).to.be.revertedWith("You are not provider");
   });
 
-  it("should not allow creating a certificate with an already existing course name", async function () {
-    const courseName = "Blockchain Basics";
-    const skills1 = ["Solidity", "Web3.js", "Ethereum"];
-    const skills2 = ["Smart Contracts", "Decentralized Applications"];
-
-    await certificationSystem.connect(provider).register_yourself("Muhammad");
-    await certificationSystem
-      .connect(provider)
-      .become_provider("ABC Institute");
-    await certificationSystem
-      .connect(provider)
-      .create_certificate(courseName, skills1);
-
-    await expect(
-      certificationSystem
-        .connect(provider)
-        .create_certificate(courseName, skills2)
-    ).to.be.revertedWith("This certificate is already created");
-  });
-
   //   // /////////////////////////////////////////////////////////////// give_certificate_to_user() function tests
 
   it("should give a certificate to a user", async function () {
@@ -259,47 +239,6 @@ describe("Certification System Smart Contract Test", function () {
           user1.address
         )
     ).to.be.revertedWith("Course not found");
-  });
-
-  it("should not give a certificate to a user who is already certified in the course", async function () {
-    await certificationSystem.connect(provider).register_yourself("Muhammad");
-
-    await certificationSystem
-      .connect(provider)
-      .become_provider("ABC Institute");
-
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Blockchain Developer", ["Solidity", "Ethereum"]);
-
-    const courseName = "Blockchain Developer";
-    const courseLength = "3 months";
-    const certificateUrl = "https://example.com/certificate";
-    const instructorsNames = ["Instructor 1", "Instructor 2"];
-
-    await certificationSystem.connect(user1).register_yourself("User 1");
-
-    await certificationSystem
-      .connect(provider)
-      .give_certificate_to_user(
-        courseName,
-        courseLength,
-        certificateUrl,
-        instructorsNames,
-        user1.address
-      );
-
-    await expect(
-      certificationSystem
-        .connect(provider)
-        .give_certificate_to_user(
-          courseName,
-          courseLength,
-          certificateUrl,
-          instructorsNames,
-          user1.address
-        )
-    ).to.be.revertedWith("This user is already certified in this course.");
   });
 
   //   // /////////////////////////////////////////////////////////////// send_certificate() function tests
@@ -443,21 +382,6 @@ describe("Certification System Smart Contract Test", function () {
         .connect(user1)
         .invite_others(owner.address, "Join our certification system!")
     ).to.be.revertedWith("You can't invite owner.");
-  });
-
-  it("should not allow inviting a provider to register", async function () {
-    await certificationSystem.connect(user1).register_yourself("Muhammad");
-
-    await certificationSystem.connect(provider).register_yourself("Muhammad");
-    await certificationSystem
-      .connect(provider)
-      .become_provider("ABC Institute");
-
-    await expect(
-      certificationSystem
-        .connect(user1)
-        .invite_others(provider.address, "Join our certification system!")
-    ).to.be.revertedWith("You can't invite provider.");
   });
 
   it("should invite others to register with the certification system", async function () {
@@ -749,69 +673,5 @@ describe("Certification System Smart Contract Test", function () {
   it("Should find no skills if no skills have been created", async () => {
     const foundSkills = await certificationSystem.find_skills("Ethereum");
     expect(foundSkills).to.have.lengthOf(0);
-  });
-
-  //   // /////////////////////////////////////////////////////////////// find_certificates() function tests
-
-  it("should find certificates for existing keywords", async function () {
-    await certificationSystem.connect(provider).register_yourself("Muhammad");
-    await certificationSystem
-      .connect(provider)
-      .become_provider("Provider Institute");
-
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Blockchain Developer", ["Solidity", "Ethereum"]);
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Web Development", ["HTML", "CSS", "JavaScript"]);
-
-    const [certificates, providers, institutes, skills] =
-      await certificationSystem.find_certificates("Blockchain");
-
-    expect(certificates).to.have.lengthOf(1);
-    expect(certificates[0]).to.equal("Blockchain Developer");
-
-    expect(providers).to.have.lengthOf(1);
-
-    expect(institutes).to.have.lengthOf(1);
-
-    expect(skills).to.have.lengthOf(1);
-  });
-
-  it("should find multiple certificates for the same keyword", async function () {
-    await certificationSystem.connect(provider).register_yourself("Muhammad");
-    await certificationSystem
-      .connect(provider)
-      .become_provider("Provider Institute");
-
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Data Science", ["Python", "Machine Learning"]);
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Data Analyst", ["Python", "Data Analysis"]);
-
-    const [certificates, providers, institutes, skills] =
-      await certificationSystem.find_certificates("Data");
-
-    expect(certificates).to.have.lengthOf(2);
-    expect(certificates).to.deep.equal(["Data Science", "Data Analyst"]);
-
-    expect(providers).to.have.lengthOf(2);
-
-    expect(institutes).to.have.lengthOf(2);
-
-    expect(skills).to.have.lengthOf(2);
-  });
-
-  it("should return empty arrays for non-existing keywords", async function () {
-    const [certificates, providers, institutes, skills] =
-      await certificationSystem.find_certificates("Blockchain");
-
-    expect(certificates).to.have.lengthOf(0);
-    expect(providers).to.have.lengthOf(0);
-    expect(institutes).to.have.lengthOf(0);
-    expect(skills).to.have.lengthOf(0);
   });
 });

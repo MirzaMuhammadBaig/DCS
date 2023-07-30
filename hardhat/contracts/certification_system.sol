@@ -126,7 +126,6 @@ contract certification_system is Ownable {
         string memory _course_name,
         string[] memory _skills
     ) public isProvider {
-
         provider_certificate_data
             memory newCertificate = provider_certificate_data({
                 course_name: _course_name,
@@ -243,10 +242,9 @@ contract certification_system is Ownable {
         check_user_register_data[msg.sender].user_id = user_registered_count;
     }
 
-    function become_provider(string memory _institute_name)
-        public
-        isRegistered
-    {
+    function become_provider(
+        string memory _institute_name
+    ) public isRegistered {
         require(
             msg.sender != providers_details[msg.sender].providerAddress,
             "You are already provider"
@@ -261,11 +259,10 @@ contract certification_system is Ownable {
             .user_address;
     }
 
-    function send_certificate(address _to, string memory _course_name)
-        public
-        isRegistered
-    {
-
+    function send_certificate(
+        address _to,
+        string memory _course_name
+    ) public isRegistered {
         require(
             check_user_register_data[_to].user_address == _to,
             "receiver is not registered"
@@ -293,10 +290,10 @@ contract certification_system is Ownable {
         emit CertificateSend(_to, msg.sender, _course_name, certificateUrl);
     }
 
-    function invite_others(address _address, string memory _message)
-        public
-        isRegistered
-    {
+    function invite_others(
+        address _address,
+        string memory _message
+    ) public isRegistered {
         require(_address != msg.sender, "You can't invite yourself.");
         require(_address != owner(), "You can't invite owner.");
         require(
@@ -310,7 +307,23 @@ contract certification_system is Ownable {
 
     // Getter Functions
 
-    function get_user_certificates(address _user_address)
+    function get_user_register_data(
+        address _address
+    )
+        public
+        view
+        returns (address _user_address, string memory _name, uint256 _id)
+    {
+        _user_address = check_user_register_data[_address].user_address;
+        _name = check_user_register_data[_address].user_name;
+        _id = check_user_register_data[_address].user_id;
+
+        return (_user_address, _name, _id);
+    }
+
+    function get_user_certificates(
+        address _user_address
+    )
         public
         view
         returns (
@@ -396,19 +409,16 @@ contract certification_system is Ownable {
         return (_sended_addresses, _course_names, _certificate_urls);
     }
 
-    function is_user_certified(address _address, string memory _course_name)
-        public
-        view
-        returns (user_status)
-    {
+    function is_user_certified(
+        address _address,
+        string memory _course_name
+    ) public view returns (user_status) {
         return _is_user_certified[_address][_course_name]._user_status;
     }
 
-    function find_skills(string memory keyword)
-        public
-        view
-        returns (string[] memory Skills)
-    {
+    function find_skills(
+        string memory keyword
+    ) public view returns (string[] memory Skills) {
         uint256 matchingCount = 0;
         string[] memory matchingSentences = new string[](skills.length);
 
@@ -427,11 +437,9 @@ contract certification_system is Ownable {
         return (Skills);
     }
 
-    function find_certificates(string memory keyword)
-        public
-        view
-        returns (string[] memory Certificates)
-    {
+    function find_certificates(
+        string memory keyword
+    ) public view returns (string[] memory Certificates) {
         string[] memory foundCertificates;
         uint256 foundCount = 0;
 
@@ -455,19 +463,17 @@ contract certification_system is Ownable {
     }
 
     // Supporting Functions
-    function compareStrings(string memory a, string memory b)
-        private
-        pure
-        returns (bool)
-    {
+    function compareStrings(
+        string memory a,
+        string memory b
+    ) private pure returns (bool) {
         return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
     }
 
-    function containsIgnoreCase(string memory str, string memory substr)
-        private
-        pure
-        returns (bool)
-    {
+    function containsIgnoreCase(
+        string memory str,
+        string memory substr
+    ) private pure returns (bool) {
         bytes memory strBytes = bytes(str);
         bytes memory substrBytes = bytes(substr);
 
@@ -496,4 +502,3 @@ contract certification_system is Ownable {
         return b;
     }
 }
-
