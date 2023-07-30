@@ -68,10 +68,18 @@ function ReceiveCert() {
               </p>
               <p>
                 <span className="fw-bold">Certificate URLs: </span>
-                {certificateDetails._certificate_urls
-                  .map((urls) => urls)
-                  .join(", ")}
+                {certificateDetails._certificate_urls.map((url, index) => (
+                  <React.Fragment key={index}>
+                    <a href={url} target="_blank" rel="noopener noreferrer">
+                      {url}
+                    </a>
+                    {index < certificateDetails._certificate_urls.length - 1
+                      ? ", "
+                      : ""}
+                  </React.Fragment>
+                ))}
               </p>
+
               <p>
                 <span className="fw-bold">Sended Addresses: </span>
                 {certificateDetails._sended_addresses

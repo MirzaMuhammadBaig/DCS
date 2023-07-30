@@ -34,6 +34,7 @@ function SearchCert() {
           .find_certificates(certificate);
 
         setCertificateDetails(certificateData);
+        console.log(certificateData);
       } else {
         alert("Please connect to a wallet.");
       }
@@ -76,7 +77,7 @@ function SearchCert() {
           <div class="card-footer pt-4">
             <p>
               <span className="fw-bold">Certificate Names: </span>
-              {certificateDetails.Certificates.map((course) => course).join(
+              {certificateDetails.map((course) => course).join(
                 ", "
               )}
             </p>

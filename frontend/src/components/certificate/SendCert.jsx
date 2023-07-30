@@ -153,8 +153,10 @@ function SendCert() {
                 {sendEvent.courseName}
               </p>
               <p>
+                <a href={sendEvent.certificateUrl} target="blank">
                 <span className="fw-bold">Certificate URL:</span>{" "}
                 {sendEvent.certificateUrl}
+                </a>
               </p>
               <p>
                 <span className="fw-bold">Receiver Address:</span>{" "}

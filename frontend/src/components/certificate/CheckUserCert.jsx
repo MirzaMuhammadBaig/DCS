@@ -130,7 +130,9 @@ function CheckUserCert() {
                 </p>
                 <p>
                   <span className="fw-bold">Certificate URL: </span>
-                  {certificateDetails[7]}
+                  <a href={certificateDetails[7]} target="blank">
+                    {certificateDetails[7]}
+                  </a>
                 </p>
                 <p>
                   <span className="fw-bold">Receiver Address: </span>

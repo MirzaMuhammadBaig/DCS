@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 
-function GiveCert(props) {
+function GiveCert() {
   const [certificateIssuedEvent, setCertificateIssuedEvent] = useState(null);
 
   const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
@@ -95,13 +95,6 @@ function GiveCert(props) {
     certificateUrl
   ) => {
     setCertificateIssuedEvent({
-      takerAddress,
-      giverAddress,
-      courseName,
-      certificateUrl,
-    });
-
-    props.onCertificateIssued({
       takerAddress,
       giverAddress,
       courseName,
@@ -203,8 +196,10 @@ function GiveCert(props) {
                 {certificateIssuedEvent.courseName}
               </p>
               <p>
-                <span className="fw-bold">Certificate URL:</span>{" "}
-                {certificateIssuedEvent.certificateUrl}
+                <a href={certificateIssuedEvent.certificateUrl} target="blank">
+                  <span className="fw-bold">Certificate URL:</span>{" "}
+                  {certificateIssuedEvent.certificateUrl}
+                </a>
               </p>
               <p>
                 <span className="fw-bold">Receiver Address:</span>{" "}
