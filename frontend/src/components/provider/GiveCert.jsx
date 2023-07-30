@@ -196,8 +196,8 @@ function GiveCert() {
                 {certificateIssuedEvent.courseName}
               </p>
               <p>
-                <a href={certificateIssuedEvent.certificateUrl} target="blank">
                   <span className="fw-bold">Certificate URL:</span>{" "}
+                <a href={certificateIssuedEvent.certificateUrl} target="blank">
                   {certificateIssuedEvent.certificateUrl}
                 </a>
               </p>
