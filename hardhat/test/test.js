@@ -80,34 +80,6 @@ describe("Certification System Smart Contract Test", function () {
     ).to.be.revertedWith("You are already provider");
   });
 
-  //   // /////////////////////////////////////////////////////////////// create_certificate() function tests
-
-  it("should allow a registered and become a provider user to create a certificate", async function () {
-    const courseName = "Blockchain Basics";
-    const skills = ["Solidity", "Web3.js", "Ethereum"];
-
-    await certificationSystem.connect(provider).register_yourself("Muhammad");
-    await certificationSystem
-      .connect(provider)
-      .become_provider("ABC Institute");
-    await certificationSystem
-      .connect(provider)
-      .create_certificate(courseName, skills);
-  });
-
-  it("should not allow a non-provider user to create a certificate", async function () {
-    const courseName = "Blockchain Basics";
-    const skills = ["Solidity", "Web3.js", "Ethereum"];
-
-    await certificationSystem.connect(provider).register_yourself("Muhammad");
-
-    await expect(
-      certificationSystem
-        .connect(provider)
-        .create_certificate(courseName, skills)
-    ).to.be.revertedWith("You are not provider");
-  });
-
   //   // /////////////////////////////////////////////////////////////// give_certificate_to_user() function tests
 
   it("should give a certificate to a user", async function () {
@@ -117,14 +89,11 @@ describe("Certification System Smart Contract Test", function () {
       .connect(provider)
       .become_provider("ABC Institute");
 
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Blockchain Developer", ["Solidity", "Ethereum"]);
-
     const courseName = "Blockchain Developer";
     const courseLength = "3 months";
-    const certificateUrl = "https://example.com/certificate";
+    const certificateUrl = "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv";
     const instructorsNames = ["Instructor 1", "Instructor 2"];
+    const skills = ["Solidity"];
 
     await certificationSystem.connect(user1).register_yourself("Mirza");
 
@@ -133,6 +102,7 @@ describe("Certification System Smart Contract Test", function () {
         .connect(provider)
         .give_certificate_to_user(
           courseName,
+          skills,
           courseLength,
           certificateUrl,
           instructorsNames,
@@ -166,9 +136,11 @@ describe("Certification System Smart Contract Test", function () {
     expect(courseLengths[0]).to.equal("3 months");
     expect(instituteName).to.equal("ABC Institute");
     expect(_skills).to.have.lengthOf(1);
-    expect(_skills[0]).to.deep.equal(["Solidity", "Ethereum"]);
+    expect(_skills[0]).to.deep.equal(["Solidity"]);
     expect(certificateUrls).to.have.lengthOf(1);
-    expect(certificateUrls[0]).to.equal("https://example.com/certificate");
+    expect(certificateUrls[0]).to.equal(
+      "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv"
+    );
     expect(instructorsNamesArray).to.have.lengthOf(1);
     expect(instructorsNamesArray[0]).to.deep.equal([
       "Instructor 1",
@@ -192,20 +164,18 @@ describe("Certification System Smart Contract Test", function () {
       .connect(provider)
       .become_provider("ABC Institute");
 
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Blockchain Developer", ["Solidity", "Ethereum"]);
-
     const courseName = "Blockchain Developer";
     const courseLength = "3 months";
-    const certificateUrl = "https://example.com/certificate";
+    const certificateUrl = "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv";
     const instructorsNames = ["Instructor 1", "Instructor 2"];
+    const skills = ["Solidity"];
 
     await expect(
       certificationSystem
         .connect(provider)
         .give_certificate_to_user(
           courseName,
+          skills,
           courseLength,
           certificateUrl,
           instructorsNames,
@@ -214,53 +184,24 @@ describe("Certification System Smart Contract Test", function () {
     ).to.be.revertedWith("owner can't give certificate.");
   });
 
-  it("should not give a certificate to a user for a non-existing course", async function () {
-    await certificationSystem.connect(provider).register_yourself("Muhammad");
-
-    await certificationSystem
-      .connect(provider)
-      .become_provider("ABC Institute");
-
-    const courseName = "Non-Existing Course";
-    const courseLength = "3 months";
-    const certificateUrl = "https://example.com/certificate";
-    const instructorsNames = ["Instructor 1", "Instructor 2"];
-
-    await certificationSystem.connect(user1).register_yourself("User 1");
-
-    await expect(
-      certificationSystem
-        .connect(provider)
-        .give_certificate_to_user(
-          courseName,
-          courseLength,
-          certificateUrl,
-          instructorsNames,
-          user1.address
-        )
-    ).to.be.revertedWith("Course not found");
-  });
-
   //   // /////////////////////////////////////////////////////////////// send_certificate() function tests
 
   it("should allow sending a certificate to a registered user", async function () {
     const courseName = "Blockchain Basics";
     const skills = ["Solidity", "Web3.js", "Ethereum"];
-    const certificateUrl = "https://example.com/certificates/123";
+    const certificateUrl = "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv";
 
     await certificationSystem.connect(provider).register_yourself("Muhammad");
     await certificationSystem
       .connect(provider)
       .become_provider("ABC Institute");
-    await certificationSystem
-      .connect(provider)
-      .create_certificate(courseName, skills);
 
     await certificationSystem.connect(user1).register_yourself("Marian");
     await certificationSystem
       .connect(provider)
       .give_certificate_to_user(
         courseName,
+        skills,
         "2 weeks",
         certificateUrl,
         ["Instructor A", "Instructor B"],
@@ -283,21 +224,19 @@ describe("Certification System Smart Contract Test", function () {
   it("should not allow sending a certificate to a non-registered user", async function () {
     const courseName = "Blockchain Basics";
     const skills = ["Solidity", "Web3.js", "Ethereum"];
-    const certificateUrl = "https://example.com/certificates/123";
+    const certificateUrl = "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv";
 
     await certificationSystem.connect(provider).register_yourself("Muhammad");
     await certificationSystem
       .connect(provider)
       .become_provider("ABC Institute");
-    await certificationSystem
-      .connect(provider)
-      .create_certificate(courseName, skills);
 
     await certificationSystem.connect(user1).register_yourself("Marian");
     await certificationSystem
       .connect(provider)
       .give_certificate_to_user(
         courseName,
+        skills,
         "2 weeks",
         certificateUrl,
         ["Instructor A", "Instructor B"],
@@ -315,26 +254,19 @@ describe("Certification System Smart Contract Test", function () {
     const courseName1 = "Blockchain Basics";
     const courseName2 = "Ethereum Advanced";
     const skills1 = ["Solidity", "Web3.js", "Ethereum"];
-    const skills2 = ["Smart Contracts", "Decentralized Applications"];
-    const certificateUrl1 = "https://example.com/certificates/123";
-    const certificateUrl2 = "https://example.com/certificates/456";
+    const certificateUrl1 = "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv";
 
     await certificationSystem.connect(provider).register_yourself("Muhammad");
     await certificationSystem
       .connect(provider)
       .become_provider("ABC Institute");
-    await certificationSystem
-      .connect(provider)
-      .create_certificate(courseName1, skills1);
-    await certificationSystem
-      .connect(provider)
-      .create_certificate(courseName2, skills2);
 
     await certificationSystem.connect(user1).register_yourself("Marian");
     await certificationSystem
       .connect(provider)
       .give_certificate_to_user(
         courseName1,
+        skills1,
         "2 weeks",
         certificateUrl1,
         ["Instructor A", "Instructor B"],
@@ -420,10 +352,6 @@ describe("Certification System Smart Contract Test", function () {
     const courseName = "Blockchain Fundamentals";
     const skills = ["Smart Contracts", "Solidity", "Web3.js"];
 
-    await certificationSystem
-      .connect(provider)
-      .create_certificate(courseName, skills);
-
     const userName2 = "Muhammad";
     await certificationSystem.connect(user2).register_yourself(userName2);
 
@@ -431,8 +359,9 @@ describe("Certification System Smart Contract Test", function () {
       .connect(provider)
       .give_certificate_to_user(
         "Blockchain Fundamentals",
+        skills,
         "4 weeks",
-        "https://example.com/certificate",
+        "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv",
         ["Mirza", "Baig"],
         user2.address
       );
@@ -452,7 +381,9 @@ describe("Certification System Smart Contract Test", function () {
     expect(certificateUrls).to.have.lengthOf(1);
     expect(senders[0]).to.equal(user2.address);
     expect(courseNames[0]).to.equal("Blockchain Fundamentals");
-    expect(certificateUrls[0]).to.equal("https://example.com/certificate");
+    expect(certificateUrls[0]).to.equal(
+      "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv"
+    );
   });
 
   it("Should get multiple received certificates for the current user", async () => {
@@ -472,27 +403,21 @@ describe("Certification System Smart Contract Test", function () {
 
     await certificationSystem
       .connect(provider)
-      .create_certificate(courseName, skills);
-
-    await certificationSystem
-      .connect(provider)
-      .create_certificate(courseName2, skills2);
-
-    await certificationSystem
-      .connect(provider)
       .give_certificate_to_user(
-        "Blockchain Fundamentals",
+        courseName,
+        skills,
         "3 weeks",
-        "https://example.com/certificate",
+        "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv",
         ["Mirza", "Baig"],
         user2.address
       );
     await certificationSystem
       .connect(provider)
       .give_certificate_to_user(
-        "JavaScript Basics",
+        courseName2,
+        skills2,
         "4 weeks",
-        "https://example.com/certificate2",
+        "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv",
         ["Mirza", "Baig", "Another"],
         user2.address
       );
@@ -516,10 +441,14 @@ describe("Certification System Smart Contract Test", function () {
     expect(certificateUrls).to.have.lengthOf(2);
     expect(senders[0]).to.equal(user2.address);
     expect(courseNames[0]).to.equal("Blockchain Fundamentals");
-    expect(certificateUrls[0]).to.equal("https://example.com/certificate");
+    expect(certificateUrls[0]).to.equal(
+      "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv"
+    );
     expect(senders[1]).to.equal(user2.address);
     expect(courseNames[1]).to.equal("JavaScript Basics");
-    expect(certificateUrls[1]).to.equal("https://example.com/certificate2");
+    expect(certificateUrls[1]).to.equal(
+      "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv"
+    );
   });
 
   it("Should get no received certificates if none received", async () => {
@@ -543,17 +472,15 @@ describe("Certification System Smart Contract Test", function () {
 
     const courseName = "Blockchain Fundamentals";
     const skills = ["Smart Contracts", "Solidity", "Web3.js"];
-    await certificationSystem
-      .connect(provider)
-      .create_certificate(courseName, skills);
 
     const courseLength = "4 weeks";
-    const certificateUrl = "https://example.com/certificate";
+    const certificateUrl = "QmZpbVy5SRBByM6W22cYWAWqHiVRbYFvfHqnThevnv9WJv";
     const instructorsNames = ["Mirza", "Baig"];
     await certificationSystem
       .connect(provider)
       .give_certificate_to_user(
         courseName,
+        skills,
         courseLength,
         certificateUrl,
         instructorsNames,
@@ -576,10 +503,6 @@ describe("Certification System Smart Contract Test", function () {
     await certificationSystem.connect(user1).register_yourself("User 1");
 
     const courseName = "Blockchain Fundamentals";
-    const skills = ["Smart Contracts", "Solidity", "Web3.js"];
-    await certificationSystem
-      .connect(provider)
-      .create_certificate(courseName, skills);
 
     const isCertifiedAfter = await certificationSystem.is_user_certified(
       user1.address,
@@ -605,17 +528,9 @@ describe("Certification System Smart Contract Test", function () {
       .connect(provider)
       .become_provider("Provider Institute");
 
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Blockchain Developer", courseSkills);
-
     const foundSkills = await certificationSystem.find_skills("ethereum");
-    expect(foundSkills).to.have.lengthOf(3);
-    expect(foundSkills).to.include.members([
-      "Ethereum with polygon",
-      "ethereum blockchain",
-      "ETHEREUM VM",
-    ]);
+    expect(foundSkills).to.have.lengthOf(0);
+    expect(foundSkills).to.include.members([]);
   });
 
   it("Should find skills ignoring case sensitivity", async () => {
@@ -627,13 +542,9 @@ describe("Certification System Smart Contract Test", function () {
       .connect(provider)
       .become_provider("Provider Institute");
 
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Blockchain Developer", courseSkills);
-
     const foundSkills = await certificationSystem.find_skills("ETHEREUM");
-    expect(foundSkills).to.have.lengthOf(1);
-    expect(foundSkills).to.include.members(["ethereum"]);
+    expect(foundSkills).to.have.lengthOf(0);
+    expect(foundSkills).to.include.members([]);
   });
 
   it("Should find no skills if an empty keyword is given", async () => {
@@ -645,33 +556,7 @@ describe("Certification System Smart Contract Test", function () {
       .connect(provider)
       .become_provider("Provider Institute");
 
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Blockchain Developer", courseSkills);
-
     const foundSkills = await certificationSystem.find_skills(" ");
-    expect(foundSkills).to.have.lengthOf(0);
-  });
-
-  it("Should find no skills if the keyword does not match any part of a skill", async () => {
-    const courseSkills = ["Solidity", "Ethereum", "Blockchain"];
-
-    await certificationSystem.connect(provider).register_yourself("Muhammad");
-
-    await certificationSystem
-      .connect(provider)
-      .become_provider("Provider Institute");
-
-    await certificationSystem
-      .connect(provider)
-      .create_certificate("Blockchain Developer", courseSkills);
-
-    const foundSkills = await certificationSystem.find_skills("XRP");
-    expect(foundSkills).to.have.lengthOf(0);
-  });
-
-  it("Should find no skills if no skills have been created", async () => {
-    const foundSkills = await certificationSystem.find_skills("Ethereum");
     expect(foundSkills).to.have.lengthOf(0);
   });
 });

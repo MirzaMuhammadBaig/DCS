@@ -135,6 +135,13 @@ function GiveCert() {
           } else if (
             error.message &&
             error.error.data.message.includes(
+              "execution reverted: InvalidMetadataHash"
+            )
+          ) {
+            alert("Invalid Metadata Hash: Issue occured in file upload on pinata");
+          }else if (
+            error.message &&
+            error.error.data.message.includes(
               "execution reverted: Taker is not registered."
             )
           ) {
