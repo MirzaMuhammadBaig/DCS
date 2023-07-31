@@ -3,8 +3,28 @@ import { ethers } from "ethers";
 import axios from "axios";
 
 function GiveCert() {
-  const [imageHash, setImageHash] = useState("");
+  const [courseName, setCourseName] = useState("");
+  const [courseLength, setCourseLength] = useState("");
+  const [instructorNames, setInstructorNames] = useState([]);
+  const [receiverAddress, setReceiverAddress] = useState("");
+
   const [certificateIssuedEvent, setCertificateIssuedEvent] = useState(null);
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+
+  const COURSENAME = (e) => {
+    setCourseName(e.target.value);
+  };
+  const COURSELENGTH = (e) => {
+    setCourseLength(e.target.value);
+  };
+  const INSTRUCTORNAMES = (e) => {
+    setInstructorNames(e.target.value);
+  };
+  const RECEIVERADDRESS = (e) => {
+    setReceiverAddress(e.target.value);
+  };
 
   const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
   const contractABI = require("../../contract/abi.json");
@@ -14,12 +34,6 @@ function GiveCert() {
     contractABI.abi,
     provider
   );
-
-  // ===================================
-  // ===================================
-
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewImage, setPreviewImage] = useState(null);
 
   const PinImageToIpfs = async (file) => {
     const pinataEndpoint = "https://api.pinata.cloud/pinning/pinFileToIPFS";
@@ -49,21 +63,6 @@ function GiveCert() {
     }
   };
 
-  const handleUpload = async () => {
-    try {
-      if (selectedFile) {
-        const ImageHash = await PinImageToIpfs(selectedFile);
-        console.log(
-          "🚀 ~ file: ImageUploader.jsx:41 ~ handleUpload ~ ImageHash:",
-          ImageHash
-        );
-        setImageHash(ImageHash);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleFileSelect = (event) => {
     const file = event?.target?.files[0];
     if (file) {
@@ -77,80 +76,86 @@ function GiveCert() {
     }
   };
 
-  // ===================================
-
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const courseName = formData.get("courseName");
-    const courseLength = formData.get("courseLength");
-    const certificateUrl = imageHash;
-    const instructorNames = formData.get("instructorNames").split(",");
-    const receiverAddress = formData.get("receiverAddress");
+  const submitForm = async (e) => {
+    e.preventDefault();
 
     try {
-      if (window.ethereum) {
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
-        if (accounts.length === 0) {
-          throw new Error("User denied account access.");
-        }
+      let ImageHash;
+      if (selectedFile) {
+        ImageHash = await PinImageToIpfs(selectedFile);
 
-        const signer = provider.getSigner();
-
-        const tx = await contract
-          .connect(signer)
-          .give_certificate_to_user(
-            courseName,
-            courseLength,
-            certificateUrl,
-            instructorNames,
-            receiverAddress
-          );
-
-        await tx.wait();
-
-        alert("Certificate Sent");
-      } else {
-        alert("Please connect to a wallet.");
+        console.log(
+          "🚀 ~ file: ImageUploader.jsx:41 ~ handleUpload ~ ImageHash:",
+          ImageHash
+        );
       }
-    } catch (error) {
+
       try {
-        if (
-          error.message &&
-          error.error.data.message.includes(
-            "execution reverted: You are not provider"
-          )
-        ) {
-          alert("You are not provider");
-        } else if (
-          error.message &&
-          error.error.data.message.includes(
-            "execution reverted: owner can't give certificate."
-          )
-        ) {
-          alert("Owner can't be a recevier");
-        } else if (
-          error.message &&
-          error.error.data.message.includes(
-            "execution reverted: Taker is not registered."
-          )
-        ) {
-          alert("Receiver is not registered");
-        } else if (
-          error.message &&
-          error.error.data.message.includes(
-            "execution reverted: Course not found"
-          )
-        ) {
-          alert("Course is not created");
+        if (window.ethereum) {
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          if (accounts.length === 0) {
+            throw new Error("User denied account access.");
+          }
+
+          const signer = provider.getSigner();
+          console.log("ImageHash", ImageHash);
+          const tx = await contract
+            .connect(signer)
+            .give_certificate_to_user(
+              courseName,
+              courseLength,
+              ImageHash,
+              instructorNames.split(","),
+              receiverAddress
+            );
+          await tx.wait();
+          alert("Certificate Sent");
         } else {
-          alert("'Something went wrong'");
+          alert("Please connect to a wallet.");
         }
       } catch (error) {
-        alert("Something went wrong");
+        console.log(error);
+        try {
+          if (
+            error.message &&
+            error.error.data.message.includes(
+              "execution reverted: You are not provider"
+            )
+          ) {
+            alert("You are not provider");
+          } else if (
+            error.message &&
+            error.error.data.message.includes(
+              "execution reverted: owner can't give certificate."
+            )
+          ) {
+            alert("Owner can't be a recevier");
+          } else if (
+            error.message &&
+            error.error.data.message.includes(
+              "execution reverted: Taker is not registered."
+            )
+          ) {
+            alert("Receiver is not registered");
+          } else if (
+            error.message &&
+            error.error.data.message.includes(
+              "execution reverted: Course not found"
+            )
+          ) {
+            alert("Course is not created");
+          } else {
+            alert("'Something went wrong'");
+          }
+        } catch (error) {
+          console.log(error);
+          alert("Something went wrong");
+        }
       }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -187,7 +192,8 @@ function GiveCert() {
               After created the certificate you can issue certificate to the
               registered user.
             </p>
-            <form class="" onSubmit={handleFormSubmit}>
+
+            <form onSubmit={submitForm}>
               <div className="row g-3">
                 <div className="col-2"></div>
                 <div className="col-8">
@@ -195,6 +201,8 @@ function GiveCert() {
                     <input
                       type="text"
                       name="courseName"
+                      value={courseName}
+                      onChange={COURSENAME}
                       class="form-control"
                       placeholder="Enter name of certificate/course"
                       id="validationDefaultUsername"
@@ -202,10 +210,13 @@ function GiveCert() {
                       required
                     />
                   </div>
+
                   <div class="input-group mt-3">
                     <input
                       type="text"
                       name="courseLength"
+                      value={courseLength}
+                      onChange={COURSELENGTH}
                       class="form-control"
                       placeholder="Enter duration of certificate/course"
                       id="validationDefaultUsername"
@@ -213,21 +224,13 @@ function GiveCert() {
                       required
                     />
                   </div>
-                  {/* <div class="input-group mt-3">
-                    <input
-                      type="text"
-                      name="certificateUrl"
-                      class="form-control"
-                      placeholder="Enter certificate url"
-                      id="validationDefaultUsername"
-                      aria-describedby="inputGroupPrepend2"
-                      required
-                    />
-                  </div> */}
+
                   <div class="input-group mt-3">
                     <input
                       type="text"
                       name="instructorNames"
+                      value={instructorNames}
+                      onChange={INSTRUCTORNAMES}
                       class="form-control"
                       placeholder="Enter instructor names"
                       id="validationDefaultUsername"
@@ -235,10 +238,13 @@ function GiveCert() {
                       required
                     />
                   </div>
+
                   <div class="input-group mt-3">
                     <input
                       type="text"
                       name="receiverAddress"
+                      value={receiverAddress}
+                      onChange={RECEIVERADDRESS}
                       class="form-control"
                       placeholder="Enter receiver address"
                       id="validationDefaultUsername"
@@ -246,8 +252,6 @@ function GiveCert() {
                       required
                     />
                   </div>
-                  {/* <Upload ImageCallBack={ImageCallBack}/> */}
-
                   {/* ------------------------ */}
                   <div>
                     <div className="mt-3">
@@ -263,15 +267,13 @@ function GiveCert() {
                         />
                       )}
                     </div>
-
-                    {/* <button onClick={handleUpload}>Click</button> */}
                   </div>
                   {/* ------------------------ */}
                 </div>
                 <div className="col-2"></div>
               </div>
 
-              <button onClick={handleUpload} class="btn btn-primary mt-3">
+              <button type="submit" class="btn btn-primary mt-3">
                 Issue Certificate
               </button>
             </form>
@@ -284,8 +286,11 @@ function GiveCert() {
               </p>
               <p>
                 <span className="fw-bold">Certificate URL:</span>{" "}
-                <a href={certificateIssuedEvent.certificateUrl} target="blank">
-                  {certificateIssuedEvent.certificateUrl}
+                <a
+                  href={`https://gateway.pinata.cloud/ipfs/${certificateIssuedEvent.certificateUrl}`}
+                  target="blank"
+                >
+                  {`https://gateway.pinata.cloud/ipfs/${certificateIssuedEvent.certificateUrl}`}
                 </a>
               </p>
               <p>
@@ -305,33 +310,6 @@ function GiveCert() {
 }
 
 export default GiveCert;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState, useEffect } from "react";
 // import { ethers } from "ethers";

@@ -70,8 +70,12 @@ function ReceiveCert() {
                 <span className="fw-bold">Certificate URLs: </span>
                 {certificateDetails._certificate_urls.map((url, index) => (
                   <React.Fragment key={index}>
-                    <a href={url} target="_blank" rel="noopener noreferrer">
-                      {url}
+                    <a
+                      href={`https://gateway.pinata.cloud/ipfs/${url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {`https://gateway.pinata.cloud/ipfs/${url}`}
                     </a>
                     {index < certificateDetails._certificate_urls.length - 1
                       ? ", "

@@ -34,6 +34,11 @@ function CheckUserCert() {
           .get_user_certificates(address);
 
         setCertificateDetails(certificateData);
+        console.log(typeof certificateDetails[7].join(""));
+        console.log(
+          certificateDetails[7].join(", https://gateway.pinata.cloud/ipfs/")
+        );
+        console.log(certificateDetails[7]);
       } else {
         alert("Please connect to a wallet.");
       }
@@ -128,12 +133,22 @@ function CheckUserCert() {
                   <span className="fw-bold">Certification Status: </span>
                   {certificateDetails[11] === 1 ? "Certified" : "Not Certified"}
                 </p>
+
                 <p>
-                  <span className="fw-bold">Certificate URL: </span>
-                  <a href={certificateDetails[7]} target="blank">
-                    {certificateDetails[7]}
-                  </a>
+                  <span className="fw-bold">Certificate URLs: </span>
+                  {certificateDetails[7].map((url, index) => (
+                    <React.Fragment key={index}>
+                      <a
+                        href={`https://gateway.pinata.cloud/ipfs/${url}`}
+                        target="_blank"
+                      >
+                        {`https://gateway.pinata.cloud/ipfs/${url}`}
+                      </a>
+                      {index < certificateDetails[7].length - 1 ? ", " : ""}
+                    </React.Fragment>
+                  ))}
                 </p>
+
                 <p>
                   <span className="fw-bold">Receiver Address: </span>
                   {certificateDetails[9]}
@@ -141,6 +156,21 @@ function CheckUserCert() {
                 <p>
                   <span className="fw-bold">Provider Address: </span>
                   {certificateDetails[10]}
+                </p>
+
+                <p>
+                  <div className="fw-bold mb-3">Images: </div>
+                  {certificateDetails[7].map((url, index) => (
+                    <React.Fragment key={index}>
+                      <div className="m-3">
+                        <img
+                          src={`https://gateway.pinata.cloud/ipfs/${url}`}
+                          alt="Certificate Image"
+                          style={{ width: "200px", height: "200px" }}
+                        />
+                      </div>
+                    </React.Fragment>
+                  ))}
                 </p>
               </div>
             ) : (
