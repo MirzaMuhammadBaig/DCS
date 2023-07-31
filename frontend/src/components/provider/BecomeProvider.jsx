@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import Navbar2 from "../navbar/Navbar2";
 import Footer2 from "../Footer/Footer2";
 import CreateCert from "./CreateCert";
-// import GiveCert from "./GiveCert";
+import GiveCert from "./GiveCert";
 
 function BecomeProvider() {
   const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
@@ -103,7 +103,7 @@ function BecomeProvider() {
         </div>
       </div>
       <CreateCert />
-      {/* <GiveCert /> */}
+      <GiveCert />
       <Footer2 />
     </>
   );

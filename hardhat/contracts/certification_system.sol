@@ -18,7 +18,6 @@ contract certification_system is Ownable {
         string providerName;
         string instituteName;
         address providerAddress;
-        uint256 certificate_counts;
     }
 
     struct provider_certificate_data {
@@ -125,7 +124,7 @@ contract certification_system is Ownable {
     function create_certificate(
         string memory _course_name,
         string[] memory _skills
-    ) internal isProvider {
+    ) public isProvider {
         provider_certificate_data
             memory newCertificate = provider_certificate_data({
                 course_name: _course_name,
@@ -137,9 +136,14 @@ contract certification_system is Ownable {
 
         provider_certificates_details[msg.sender].push(newCertificate);
 
-        certifications.push(_course_name);
-
-        providers_details[msg.sender].certificate_counts++;
+        if (
+            !compareStrings(
+                course_Names_skills[msg.sender][_course_name].course_name,
+                _course_name
+            )
+        ) {
+            certifications.push(_course_name);
+        }
 
         course_Names_skills[msg.sender][_course_name]
             .course_name = _course_name;
@@ -164,7 +168,6 @@ contract certification_system is Ownable {
 
     function give_certificate_to_user(
         string memory _course_name,
-        string[] memory _skills,
         string memory _course_length,
         string memory _certificate_url,
         string[] memory _instructors_names,
@@ -185,15 +188,6 @@ contract certification_system is Ownable {
         );
 
         require(bytes(_certificate_url).length == 46, "InvalidMetadataHash");
-
-        if (
-            !compareStrings(
-                course_Names_skills[msg.sender][_course_name].course_name,
-                _course_name
-            )
-        ) {
-            create_certificate(_course_name, _skills);
-        }
 
         certificate_detail memory NewCertificate2 = certificate_detail({
             issue_date: block.timestamp,

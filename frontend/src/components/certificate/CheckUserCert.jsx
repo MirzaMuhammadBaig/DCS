@@ -34,11 +34,7 @@ function CheckUserCert() {
           .get_user_certificates(address);
 
         setCertificateDetails(certificateData);
-        console.log(typeof certificateDetails[7].join(""));
-        console.log(
-          certificateDetails[7].join(", https://gateway.pinata.cloud/ipfs/")
-        );
-        console.log(certificateDetails[7]);
+        
       } else {
         alert("Please connect to a wallet.");
       }
@@ -97,6 +93,21 @@ function CheckUserCert() {
             </div>
             {certificateDetails ? (
               <div class="card-footer pt-4">
+                <p>
+                  <div className="fw-bold mb-3">Certificate Images: </div>
+                  {certificateDetails[7].map((url, index) => (
+                    <React.Fragment key={index}>
+                      <div className="m-3">
+                        <img
+                          src={`https://gateway.pinata.cloud/ipfs/${url}`}
+                          alt="Certificate Image"
+                          style={{ width: "200px", height: "200px" }}
+                        />
+                      </div>
+                    </React.Fragment>
+                  ))}
+                </p>
+                <hr />
                 <p>
                   <span className="fw-bold">User Id: </span>
                   {parseInt(certificateDetails[1], 16)}
@@ -158,20 +169,7 @@ function CheckUserCert() {
                   {certificateDetails[10]}
                 </p>
 
-                <p>
-                  <div className="fw-bold mb-3">Images: </div>
-                  {certificateDetails[7].map((url, index) => (
-                    <React.Fragment key={index}>
-                      <div className="m-3">
-                        <img
-                          src={`https://gateway.pinata.cloud/ipfs/${url}`}
-                          alt="Certificate Image"
-                          style={{ width: "200px", height: "200px" }}
-                        />
-                      </div>
-                    </React.Fragment>
-                  ))}
-                </p>
+                
               </div>
             ) : (
               <p></p>

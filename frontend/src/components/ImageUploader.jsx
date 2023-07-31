@@ -29,7 +29,6 @@ export default function Upload(ImageCallBack) {
       const imageHash = response.data.IpfsHash;
       return imageHash;
     } catch (err) {
-      console.log(err);
       throw err;
     }
   };
@@ -43,7 +42,6 @@ export default function Upload(ImageCallBack) {
       }
     } catch (err) {
       // setError(err.message);
-      console.log(err);
     }
   };
 

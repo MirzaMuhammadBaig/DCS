@@ -34,7 +34,7 @@ function SearchCert() {
           .find_certificates(certificate);
 
         setCertificateDetails(certificateData);
-        console.log(certificateData);
+
       } else {
         alert("Please connect to a wallet.");
       }
