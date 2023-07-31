@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import Upload from "../ImageUploader";
 
 function GiveCert() {
+  const [hash , setHash ] = useState('');
   const [certificateIssuedEvent, setCertificateIssuedEvent] = useState(null);
 
   const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
@@ -14,12 +15,16 @@ function GiveCert() {
     provider
   );
 
+  const ImageCallBack = (ImageCallBack)=>{
+    setHash(ImageCallBack);
+  }
+
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const courseName = formData.get("courseName");
     const courseLength = formData.get("courseLength");
-    const certificateUrl = formData.get("certificateUrl");
+    const certificateUrl = hash;
     const instructorNames = formData.get("instructorNames").split(",");
     const receiverAddress = formData.get("receiverAddress");
 
@@ -181,7 +186,7 @@ function GiveCert() {
                       required
                     />
                   </div>
-                  <Upload/>
+                  <Upload ImageCallBack={ImageCallBack}/>
                 </div>
                 <div className="col-2"></div>
               </div>
