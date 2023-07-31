@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import Upload from "../ImageUploader";
 
 function GiveCert() {
   const [certificateIssuedEvent, setCertificateIssuedEvent] = useState(null);
@@ -147,7 +148,7 @@ function GiveCert() {
                       required
                     />
                   </div>
-                  <div class="input-group mt-3">
+                  {/* <div class="input-group mt-3">
                     <input
                       type="text"
                       name="certificateUrl"
@@ -157,7 +158,7 @@ function GiveCert() {
                       aria-describedby="inputGroupPrepend2"
                       required
                     />
-                  </div>
+                  </div> */}
                   <div class="input-group mt-3">
                     <input
                       type="text"
@@ -180,6 +181,7 @@ function GiveCert() {
                       required
                     />
                   </div>
+                  <Upload/>
                 </div>
                 <div className="col-2"></div>
               </div>
