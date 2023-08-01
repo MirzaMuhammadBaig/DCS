@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import icon from "../../assets/nav/Logo-PNG.webp";
 
 import { FaTwitterSquare } from "react-icons/fa";
-import { FaRedditSquare } from "react-icons/fa";
 import { AiFillFacebook } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa";
 import { FaReact } from "react-icons/fa";
@@ -64,17 +63,14 @@ const Footer = () => {
       </ul>
 
       <div className="footer__socials">
-        <a href="/" target="_blank" rel="noreferrer">
+        <a href="https://www.facebook.com/virtupharma/" target="_blank" rel="noreferrer">
           <AiFillFacebook />
         </a>
-        <a href="/" target="_blank" rel="noreferrer">
+        <a href="https://twitter.com/PharmaVirtu" target="_blank" rel="noreferrer">
           <FaTwitterSquare />
         </a>
-        <a href="/" target="_blank" rel="noreferrer">
+        <a href="https://www.linkedin.com/company/virtupharma/" target="_blank" rel="noreferrer">
           <FaLinkedin />
-        </a>
-        <a href="/" target="_blank" rel="noreferrer">
-          <FaRedditSquare />
         </a>
       </div>
 
