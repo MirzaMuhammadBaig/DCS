@@ -63,7 +63,7 @@ function Hero() {
   return (
     <>
       <div class="overflow-hidden " id="#" style={{ background: "#27bee3" }}>
-        <div class="container-fluid col-xxl-8">
+        <div class="container-fluid col-xxl-12">
           <div
             class="row flex-lg-nowrap align-items-center g-5"
             // style={{ height: "100vh" }}

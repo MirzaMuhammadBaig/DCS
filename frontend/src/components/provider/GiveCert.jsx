@@ -6,8 +6,7 @@ function GiveCert() {
   const [sending, setSending] = useState(false);
 
   const [courseName, setCourseName] = useState("");
-  const [courseLength, setCourseLength] = useState("");
-  const [instructorNames, setInstructorNames] = useState([]);
+  const [skills, setSkills] = useState([]);
   const [receiverAddress, setReceiverAddress] = useState("");
 
   const [certificateIssuedEvent, setCertificateIssuedEvent] = useState(null);
@@ -18,11 +17,8 @@ function GiveCert() {
   const COURSENAME = (e) => {
     setCourseName(e.target.value);
   };
-  const COURSELENGTH = (e) => {
-    setCourseLength(e.target.value);
-  };
-  const INSTRUCTORNAMES = (e) => {
-    setInstructorNames(e.target.value);
+  const SKILLS = (e) => {
+    setSkills(e.target.value);
   };
   const RECEIVERADDRESS = (e) => {
     setReceiverAddress(e.target.value);
@@ -82,10 +78,10 @@ function GiveCert() {
     setSending(true);
 
     try {
-      let ImageHash;
-      if (selectedFile) {
-        ImageHash = await PinImageToIpfs(selectedFile);
-      }
+      // let ImageHash;
+      // if (selectedFile) {
+      //   ImageHash = await PinImageToIpfs(selectedFile);
+      // }
 
       try {
         if (window.ethereum) {
@@ -98,22 +94,25 @@ function GiveCert() {
 
           const signer = provider.getSigner();
 
+          const gasLimit = 10000000; 
+
           const tx = await contract
             .connect(signer)
-            .give_certificate_to_user(
+            .issue_certificate(
               courseName,
-              courseLength,
-              ImageHash,
-              instructorNames.split(","),
+              skills.split(","),
+              "ImageHash",
               receiverAddress
             );
-
+          console.log("tx", tx);
           await tx.wait();
           alert("Certificate Sent");
         } else {
           alert("Please connect to a wallet.");
         }
       } catch (error) {
+        console.log("error", error);
+
         if (
           error.message &&
           error.error.data.message.includes(
@@ -153,12 +152,12 @@ function GiveCert() {
           alert("Course is not created");
         } else {
           alert(error);
-          // console.log(error);
+          console.log(error);
         }
       }
     } catch (error) {
       alert(error);
-      // console.log(error);
+      console.log(error);
     }
     setSending(false);
   };
@@ -218,25 +217,11 @@ function GiveCert() {
                   <div class="input-group mt-3">
                     <input
                       type="text"
-                      name="courseLength"
-                      value={courseLength}
-                      onChange={COURSELENGTH}
+                      name="skills"
+                      value={skills}
+                      onChange={SKILLS}
                       class="form-control"
-                      placeholder="Enter duration of certificate/course"
-                      id="validationDefaultUsername"
-                      aria-describedby="inputGroupPrepend2"
-                      required
-                    />
-                  </div>
-
-                  <div class="input-group mt-3">
-                    <input
-                      type="text"
-                      name="instructorNames"
-                      value={instructorNames}
-                      onChange={INSTRUCTORNAMES}
-                      class="form-control"
-                      placeholder="Enter instructor names"
+                      placeholder="Enter skills"
                       id="validationDefaultUsername"
                       aria-describedby="inputGroupPrepend2"
                       required

@@ -31,10 +31,8 @@ contract certification_system is Ownable {
     struct certificate_detail {
         uint256 issue_date;
         string course_name;
-        string course_length;
         string[] skills;
         string certificate_url;
-        string[] instructors_names;
     }
 
     struct fix_certificate_detail {
@@ -121,56 +119,10 @@ contract certification_system is Ownable {
 
     // Setter Functions
 
-    function create_certificate(
+    function issue_certificate(
         string memory _course_name,
-        string[] memory _skills
-    ) public isProvider {
-        provider_certificate_data
-            memory newCertificate = provider_certificate_data({
-                course_name: _course_name,
-                institute_name: providers_details[msg.sender].instituteName,
-                provider_name: providers_details[msg.sender].providerName,
-                provider_address: providers_details[msg.sender].providerAddress,
-                skills: _skills
-            });
-
-        provider_certificates_details[msg.sender].push(newCertificate);
-
-        if (
-            !compareStrings(
-                course_Names_skills[msg.sender][_course_name].course_name,
-                _course_name
-            )
-        ) {
-            certifications.push(_course_name);
-        }
-
-        course_Names_skills[msg.sender][_course_name]
-            .course_name = _course_name;
-        course_Names_skills[msg.sender][_course_name].skills = _skills;
-
-        uint256 skillsLength = skills.length;
-        uint256 additionalSkillsLength = _skills.length;
-        string[] memory combinedSkills = new string[](
-            skillsLength + additionalSkillsLength
-        );
-
-        for (uint256 i = 0; i < skillsLength; i++) {
-            combinedSkills[i] = skills[i];
-        }
-
-        for (uint256 i = 0; i < additionalSkillsLength; i++) {
-            combinedSkills[skillsLength + i] = _skills[i];
-        }
-
-        skills = combinedSkills;
-    }
-
-    function give_certificate_to_user(
-        string memory _course_name,
-        string memory _course_length,
+        string[] memory _skills,
         string memory _certificate_url,
-        string[] memory _instructors_names,
         address _taker_address
     ) public isProvider {
         require(owner() != _taker_address, "owner can't give certificate.");
@@ -187,15 +139,28 @@ contract certification_system is Ownable {
             "This user is already certified in this course."
         );
 
-        require(bytes(_certificate_url).length == 46, "InvalidMetadataHash");
+        provider_certificate_data
+            memory newCertificate = provider_certificate_data({
+                course_name: _course_name,
+                institute_name: providers_details[msg.sender].instituteName,
+                provider_name: providers_details[msg.sender].providerName,
+                provider_address: providers_details[msg.sender].providerAddress,
+                skills: _skills
+            });
+
+        provider_certificates_details[msg.sender].push(newCertificate);
+
+        certifications.push(_course_name);
+
+        course_Names_skills[msg.sender][_course_name]
+            .course_name = _course_name;
+        course_Names_skills[msg.sender][_course_name].skills = _skills;
 
         certificate_detail memory NewCertificate2 = certificate_detail({
             issue_date: block.timestamp,
             course_name: _course_name,
-            course_length: _course_length,
             skills: course_Names_skills[msg.sender][_course_name].skills,
-            certificate_url: _certificate_url,
-            instructors_names: _instructors_names
+            certificate_url: _certificate_url
         });
 
         userCertificates[_taker_address].push(NewCertificate2);
@@ -220,16 +185,7 @@ contract certification_system is Ownable {
         _is_user_certified[_taker_address][_course_name]
             .course_name = _course_name;
         _is_user_certified[_taker_address][_course_name]
-            .certificate_url = _certificate_url;
-        _is_user_certified[_taker_address][_course_name]
             ._user_status = user_status.Certified;
-
-        emit CertificateIssued(
-            _taker_address,
-            providers_details[msg.sender].providerAddress,
-            _course_name,
-            _certificate_url
-        );
     }
 
     function register_yourself(string memory _name) public {
@@ -313,7 +269,7 @@ contract certification_system is Ownable {
     // Getter Functions
 
     function get_user_register_data(address _address)
-        public
+        internal
         view
         returns (
             address _user_address,
@@ -336,11 +292,9 @@ contract certification_system is Ownable {
             uint256 user_id,
             uint256[] memory issueDates,
             string[] memory courseNames,
-            string[] memory courseLengths,
             string memory instituteName,
             string[][] memory _skills,
             string[] memory certificateUrls,
-            string[][] memory instructorsNames,
             address takerAddress,
             address giverAddress,
             user_status status
@@ -354,11 +308,9 @@ contract certification_system is Ownable {
         user_id = fixUserCertificates[_user_address].user_id;
         issueDates = new uint256[](userCertificatesArray.length);
         courseNames = new string[](userCertificatesArray.length);
-        courseLengths = new string[](userCertificatesArray.length);
         instituteName = fixUserCertificates[_user_address].instituteName;
         _skills = new string[][](userCertificatesArray.length);
         certificateUrls = new string[](userCertificatesArray.length);
-        instructorsNames = new string[][](userCertificatesArray.length);
         takerAddress = fixUserCertificates[_user_address].taker_address;
         giverAddress = fixUserCertificates[_user_address].giver_address;
         status = fixUserCertificates[_user_address]._user_status;
@@ -367,9 +319,7 @@ contract certification_system is Ownable {
             issueDates[i] = userCertificatesArray[i].issue_date;
             courseNames[i] = userCertificatesArray[i].course_name;
             _skills[i] = userCertificatesArray[i].skills;
-            courseLengths[i] = userCertificatesArray[i].course_length;
             certificateUrls[i] = userCertificatesArray[i].certificate_url;
-            instructorsNames[i] = userCertificatesArray[i].instructors_names;
         }
 
         return (
@@ -377,11 +327,9 @@ contract certification_system is Ownable {
             user_id,
             issueDates,
             courseNames,
-            courseLengths,
             instituteName,
             _skills,
             certificateUrls,
-            instructorsNames,
             takerAddress,
             giverAddress,
             status

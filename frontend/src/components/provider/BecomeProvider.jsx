@@ -2,7 +2,7 @@ import React from "react";
 import { ethers } from "ethers";
 import Navbar2 from "../navbar/Navbar2";
 import Footer2 from "../Footer/Footer2";
-import CreateCert from "./CreateCert";
+// import CreateCert from "./CreateCert";
 import GiveCert from "./GiveCert";
 
 function BecomeProvider() {
@@ -102,7 +102,7 @@ function BecomeProvider() {
           </div>
         </div>
       </div>
-      <CreateCert />
+      {/* <CreateCert /> */}
       <GiveCert />
       <Footer2 />
     </>
