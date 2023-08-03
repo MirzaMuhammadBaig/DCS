@@ -6,7 +6,7 @@ function About() {
     <div style={{background: "#6548bc"}}>
       <div className="pt-5 pb-5 ps-1 pe-1" id="about" >
         <h2 class="pt-3 fw-bold text-center">About</h2>
-        <div class="card mb-3" style={{ width: "100%" , background: "#1cbde0"}}>
+        <div class="card mb-3" style={{ width: "100%" , background: "#ffffff"}}>
           <div class="row g-0">
             <div class="col-md-4">
               <img

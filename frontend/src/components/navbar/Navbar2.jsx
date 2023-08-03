@@ -37,30 +37,15 @@ function Navbar2() {
                   Home
                 </Link>
               </li>
-              <li class="nav-item ms-3">
-                <a class="nav-link" href="#about">
-                  About
-                </a>
-              </li>
-              <li class="nav-item ms-3">
-                <a class="nav-link" href="#search">
-                  Search
-                </a>
-              </li>
-              <li class="nav-item ms-3">
-                <a class="nav-link" href="#invite">
-                  Invite
-                </a>
-              </li>
 
               <li class="nav-item ms-3">
                 <Link class="nav-link" to="/provider">
-                  Provider
+                  Issuer
                 </Link>
               </li>
               <li class="nav-item ms-3">
                 <Link class="nav-link nav-item" to="/certificate">
-                  Certificate
+                Holder
                 </Link>
               </li>
             </ul>

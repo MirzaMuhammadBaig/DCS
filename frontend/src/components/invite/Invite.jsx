@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
 import inviteImage from "../../assets/search/5.png";
-
 import "./invite.css";
 
 function Invite() {
   const [latestInvitation, setLatestInvitation] = useState(null);
 
-  const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
+  const contractAddress = require("../../contract/abi.json");
   const contractABI = require("../../contract/abi.json");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(
-    contractAddress,
+    contractAddress.address,
     contractABI.abi,
     provider
   );
@@ -104,7 +103,7 @@ function Invite() {
           Invite Others To Join This Platform
         </h2>
 
-        <div class="pb-5 rounded" style={{ background: "#27bee3" }}>
+        <div class="pb-5 rounded" style={{ background: "#ffffff" }}>
           <div class="image-container">
             <img
               src={inviteImage}
@@ -113,7 +112,7 @@ function Invite() {
               style={{ height: "50%", width: "12%" }}
             />
           </div>
-          <div class="card text-center" style={{ background: "#27bee3" }}>
+          <div class="card text-center" style={{ background: "#ffffff" }}>
             <div class="card-body">
               <h3 class="card-title mb-3"></h3>
               <p class="card-text"></p>

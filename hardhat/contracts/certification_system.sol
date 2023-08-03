@@ -150,11 +150,34 @@ contract certification_system is Ownable {
 
         provider_certificates_details[msg.sender].push(newCertificate);
 
-        certifications.push(_course_name);
+        if (
+            !compareStrings(
+                course_Names_skills[msg.sender][_course_name].course_name,
+                _course_name
+            )
+        ) {
+            certifications.push(_course_name);
+        }
 
         course_Names_skills[msg.sender][_course_name]
             .course_name = _course_name;
         course_Names_skills[msg.sender][_course_name].skills = _skills;
+
+            uint256 skillsLength = skills.length;
+            uint256 additionalSkillsLength = _skills.length;
+            string[] memory combinedSkills = new string[](
+                skillsLength + additionalSkillsLength
+            );
+
+            for (uint256 k = 0; k < skillsLength; k++) {
+                combinedSkills[k] = skills[k];
+            }
+
+            for (uint256 l = 0; l < additionalSkillsLength; l++) {
+                combinedSkills[skillsLength + l] = _skills[l];
+            }
+
+            skills = combinedSkills;
 
         certificate_detail memory NewCertificate2 = certificate_detail({
             issue_date: block.timestamp,
@@ -185,7 +208,16 @@ contract certification_system is Ownable {
         _is_user_certified[_taker_address][_course_name]
             .course_name = _course_name;
         _is_user_certified[_taker_address][_course_name]
+            .certificate_url = _certificate_url;
+        _is_user_certified[_taker_address][_course_name]
             ._user_status = user_status.Certified;
+
+        emit CertificateIssued(
+            _taker_address,
+            providers_details[msg.sender].providerAddress,
+            _course_name,
+            _certificate_url
+        );
     }
 
     function register_yourself(string memory _name) public {

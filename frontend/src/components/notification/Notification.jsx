@@ -9,7 +9,7 @@ function Notification() {
     <>
       <Navbar2 />
       <div className="pt-5 pb-5 ps-1 pe-1" style={{ background: "#6548bc" }}>
-        <div class="card" style={{ background: "#27bee3" }}>
+        <div class="card" style={{ background: "#ffffff" }}>
           <div class="card-header">Invitation</div>
           <div class="card-body">
             <h5 class="card-title">This {`0x`} address invited you</h5>
@@ -24,7 +24,7 @@ function Notification() {
         </div>
       </div>
       <div className="pt-5 pb-5 ps-1 pe-1" style={{ background: "#6548bc" }}>
-        <div class="card" style={{ background: "#27bee3" }}>
+        <div class="card" style={{ background: "#ffffff" }}>
           <div class="card-header">Send Certificate To Visualization</div>
           <div class="card-body">
             <h5 class="card-title mb-3">
@@ -45,7 +45,7 @@ function Notification() {
         </div>
       </div>
       <div className="pt-5 pb-5 ps-1 pe-1" style={{ background: "#6548bc" }}>
-        <div class="card" style={{ background: "#27bee3" }}>
+        <div class="card" style={{ background: "#ffffff" }}>
           <div class="card-header">Provider Issued The Certificate</div>
           <div class="card-body">
             <h5 class="card-title mb-3">

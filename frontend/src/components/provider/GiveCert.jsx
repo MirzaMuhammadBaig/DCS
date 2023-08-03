@@ -24,11 +24,11 @@ function GiveCert() {
     setReceiverAddress(e.target.value);
   };
 
-  const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
+  const contractAddress = require("../../contract/abi.json");
   const contractABI = require("../../contract/abi.json");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(
-    contractAddress,
+    contractAddress.address,
     contractABI.abi,
     provider
   );
@@ -78,10 +78,10 @@ function GiveCert() {
     setSending(true);
 
     try {
-      // let ImageHash;
-      // if (selectedFile) {
-      //   ImageHash = await PinImageToIpfs(selectedFile);
-      // }
+      let ImageHash;
+      if (selectedFile) {
+        ImageHash = await PinImageToIpfs(selectedFile);
+      }
 
       try {
         if (window.ethereum) {
@@ -94,24 +94,23 @@ function GiveCert() {
 
           const signer = provider.getSigner();
 
-          const gasLimit = 10000000; 
-
           const tx = await contract
             .connect(signer)
             .issue_certificate(
               courseName,
               skills.split(","),
-              "ImageHash",
+              ImageHash ? ImageHash : " ",
               receiverAddress
             );
-          console.log("tx", tx);
+
           await tx.wait();
+          setSending(false);
           alert("Certificate Sent");
         } else {
           alert("Please connect to a wallet.");
         }
       } catch (error) {
-        console.log("error", error);
+        setSending(false);
 
         if (
           error.message &&
@@ -130,15 +129,6 @@ function GiveCert() {
         } else if (
           error.message &&
           error.error.data.message.includes(
-            "execution reverted: InvalidMetadataHash"
-          )
-        ) {
-          alert(
-            "Invalid Metadata Hash: Issue occured in file upload on pinata"
-          );
-        } else if (
-          error.message &&
-          error.error.data.message.includes(
             "execution reverted: Taker is not registered."
           )
         ) {
@@ -146,20 +136,20 @@ function GiveCert() {
         } else if (
           error.message &&
           error.error.data.message.includes(
-            "execution reverted: Course not found"
+            "This user is already certified in this course."
           )
         ) {
-          alert("Course is not created");
+          alert("This user is already certified in this course");
         } else {
-          alert(error);
-          console.log(error);
+          // alert(error);
+          // console.log(error);
         }
       }
     } catch (error) {
       alert(error);
-      console.log(error);
+      // console.log(error);
     }
-    setSending(false);
+    // setSending(false);
   };
 
   const handleCertificateIssued = (
@@ -179,7 +169,7 @@ function GiveCert() {
   useEffect(() => {
     const eventFilter = contract.filters.CertificateIssued();
     contract.on(eventFilter, handleCertificateIssued);
-
+    console.log("eventFilter", eventFilter);
     return () => {
       contract.off(eventFilter, handleCertificateIssued);
     };
@@ -188,11 +178,11 @@ function GiveCert() {
   return (
     <>
       <div className="pt-5 pb-5 ps-1 pe-1" style={{ background: "#6548bc" }}>
-        <div class="card text-center" style={{ background: "#27bee3" }}>
+        <div class="card text-center" style={{ background: "#ffffff" }}>
           <div class="card-body">
             <h3 class="card-title">Issue Certificate</h3>
             <p class="card-text mt-4">
-              After created the certificate you can issue certificate to the
+              After become the issuer you can issue certificate to the
               registered user.
             </p>
 
@@ -264,7 +254,6 @@ function GiveCert() {
 
               <button type="submit" class="btn btn-primary mt-3">
                 {sending ? "Running...." : "Issue Certificate"}
-                {/* (Issue Certificate) */}
               </button>
             </form>
           </div>

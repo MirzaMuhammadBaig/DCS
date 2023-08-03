@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
+ 
 
 function IsUserCertified() {
   const [certificateDetails, setCertificateDetails] = useState(null);
 
-  const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
+  const contractAddress = require("../../contract/abi.json");
   const contractABI = require("../../contract/abi.json");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(
-    contractAddress,
+    contractAddress.address,
     contractABI.abi,
     provider
   );
@@ -46,7 +47,7 @@ function IsUserCertified() {
   return (
     <div>
       <div className="pt-5 pb-5 ps-1 pe-1" style={{ background: "#6548bc" }}>
-        <div class="card text-center" style={{ background: "#27bee3" }}>
+        <div class="card text-center" style={{ background: "#ffffff" }}>
           <div class="card-body">
             <h3 class="card-title">User Is Certified</h3>
             <p class="card-text mt-4">

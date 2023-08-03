@@ -1,12 +1,13 @@
 import React from "react";
 import { ethers } from "ethers";
+ 
 
 function Hero() {
-  const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
+  const contractAddress = require("../contract/abi.json");
   const contractABI = require("../contract/abi.json");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(
-    contractAddress,
+    contractAddress.address,
     contractABI.abi,
     provider
   );
@@ -62,7 +63,7 @@ function Hero() {
 
   return (
     <>
-      <div class="overflow-hidden " id="#" style={{ background: "#27bee3" }}>
+      <div class="overflow-hidden " id="#" style={{ background: "#ffffff" }}>
         <div class="container-fluid col-xxl-12">
           <div
             class="row flex-lg-nowrap align-items-center g-5"

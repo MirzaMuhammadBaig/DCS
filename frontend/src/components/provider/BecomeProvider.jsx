@@ -4,13 +4,14 @@ import Navbar2 from "../navbar/Navbar2";
 import Footer2 from "../Footer/Footer2";
 // import CreateCert from "./CreateCert";
 import GiveCert from "./GiveCert";
+ 
 
 function BecomeProvider() {
-  const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
+  const contractAddress = require("../../contract/abi.json");
   const contractABI = require("../../contract/abi.json");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(
-    contractAddress,
+    contractAddress.address,
     contractABI.abi,
     provider
   );
@@ -70,12 +71,12 @@ function BecomeProvider() {
     <>
       <Navbar2 />
       <div className="pt-5 pb-5 ps-1 pe-1" style={{ background: "#6548bc" }}>
-        <div class="card text-center" style={{ background: "#27bee3" }}>
+        <div class="card text-center" style={{ background: "#ffffff" }}>
           <div class="card-body">
-            <h3 class="card-title">Become Provider</h3>
+            <h3 class="card-title">Become Issuer</h3>
             <p class="card-text mt-4">
               First you will have to connect with wallet then register yourself
-              then you can become provider.
+              then you can become issuer.
             </p>
             <form class="" onSubmit={handleFormSubmit}>
               <div className="row g-3">
@@ -96,7 +97,7 @@ function BecomeProvider() {
                 <div className="col-2"></div>
               </div>
               <button type="submit" class="btn btn-primary mt-3">
-                Become Provider
+                Become issuer
               </button>
             </form>
           </div>

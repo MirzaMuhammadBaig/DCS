@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
 
+
 function CheckUserCert() {
   const [certificateDetails, setCertificateDetails] = useState(null);
 
-  const contractAddress = "0xac427e8155a8c24112f62b9e69d7a21efa734af9";
+  const contractAddress = require("../../contract/abi.json");
+  
   const contractABI = require("../../contract/abi.json");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(
-    contractAddress,
+    contractAddress.address,
     contractABI.abi,
     provider
   );
@@ -34,7 +36,7 @@ function CheckUserCert() {
           .get_user_certificates(address);
 
         setCertificateDetails(certificateData);
-        
+        console.log(certificateDetails);
       } else {
         alert("Please connect to a wallet.");
       }
@@ -60,11 +62,11 @@ function CheckUserCert() {
     <>
       <div>
         <div className="pt-5 pb-5 ps-1 pe-1" style={{ background: "#6548bc" }}>
-          <div class="card text-center" style={{ background: "#27bee3" }}>
+          <div class="card text-center" style={{ background: "#ffffff" }}>
             <div class="card-body">
-              <h3 class="card-title">Get Certificate Details</h3>
+              <h3 class="card-title">Get Certificate Holder Details</h3>
               <p class="card-text mt-4">
-                You can get detailsof certificate of any certified user from his
+                You can get details of certificate of any certified user from his
                 address.
               </p>
               <form onSubmit={handleFormSubmit}>
@@ -95,7 +97,7 @@ function CheckUserCert() {
               <div class="card-footer pt-4">
                 <p>
                   <div className="fw-bold mb-3">Certificate Images: </div>
-                  {certificateDetails[7].map((url, index) => (
+                  {certificateDetails[6].map((url, index) => (
                     <React.Fragment key={index}>
                       <div className="m-3">
                         <img
@@ -113,28 +115,20 @@ function CheckUserCert() {
                   {parseInt(certificateDetails[1], 16)}
                 </p>
                 <p>
-                  <span className="fw-bold">Candidiate Name: </span>
+                  <span className="fw-bold">Holder Name: </span>
                   {certificateDetails[0]}
                 </p>
                 <p>
                   <span className="fw-bold">Course Name: </span>
-                  {certificateDetails[3]}
+                  {certificateDetails[3].join(" , ")}
                 </p>
                 <p>
                   <span className="fw-bold">Insititute Name: </span>
-                  {certificateDetails[5]}
-                </p>
-                <p>
-                  <span className="fw-bold">Course Duration: </span>
                   {certificateDetails[4]}
                 </p>
                 <p>
                   <span className="fw-bold">Skills: </span>
-                  {certificateDetails[6].join(",")}
-                </p>
-                <p>
-                  <span className="fw-bold">Instructor Names: </span>
-                  {certificateDetails[8].join(",")}
+                  {certificateDetails[5].join(" , ")}
                 </p>
                 <p>
                   <span className="fw-bold">Issue Date: </span>
@@ -142,12 +136,12 @@ function CheckUserCert() {
                 </p>
                 <p>
                   <span className="fw-bold">Certification Status: </span>
-                  {certificateDetails[11] === 1 ? "Certified" : "Not Certified"}
+                  {certificateDetails[9] === 1 ? "Certified" : "Not Certified"}
                 </p>
 
                 <p>
                   <span className="fw-bold">Certificate URLs: </span>
-                  {certificateDetails[7].map((url, index) => (
+                  {certificateDetails[6].map((url, index) => (
                     <React.Fragment key={index}>
                       <a
                         href={`https://gateway.pinata.cloud/ipfs/${url}`}
@@ -161,12 +155,12 @@ function CheckUserCert() {
                 </p>
 
                 <p>
-                  <span className="fw-bold">Receiver Address: </span>
-                  {certificateDetails[9]}
+                  <span className="fw-bold">Holder Address: </span>
+                  {certificateDetails[7]}
                 </p>
                 <p>
-                  <span className="fw-bold">Provider Address: </span>
-                  {certificateDetails[10]}
+                  <span className="fw-bold">Issuer Address: </span>
+                  {certificateDetails[8]}
                 </p>
 
                 
