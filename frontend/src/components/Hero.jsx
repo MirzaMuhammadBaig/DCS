@@ -1,6 +1,6 @@
 import React from "react";
 import { ethers } from "ethers";
- 
+import HeroImage from "../assets/Hero/HeroImage.jpeg";
 
 function Hero() {
   const contractAddress = require("../contract/abi.json");
@@ -74,8 +74,8 @@ function Hero() {
                 style={{
                   "clip-path": "polygon(25% 0%, 100% 0%, 100% 99%, 0% 100%)",
                 }}
-                src="https://images.unsplash.com/photo-1618004912476-29818d81ae2e?crop=entropy&amp;cs=tinysrgb&amp;fit=crop&amp;fm=jpg&amp;ixid=MnwzNzg0fDB8MXxzZWFyY2h8NzV8fHB1cnBsZXxlbnwwfDB8fHwxNjQ3NDcxNjY4&amp;ixlib=rb-1.2.1&amp;q=80&amp;w=1080&amp;h=768"
-                class="d-block mx-lg-auto img-fluid"
+                src={HeroImage}
+                class="d-none d-lg-block mx-lg-auto img-fluid"
                 alt="hero_image"
                 loading="lazy"
                 sizes="(max-width: 1080px) 100vw, 1080px"
