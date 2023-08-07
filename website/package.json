@@ -3,7 +3,8 @@
   "version": "",
   "private": true,
   "dependencies": {
-    "@thirdweb-dev/react": "^3.14.23",
+    "@thirdweb-dev/chains": "^0.1.42",
+    "@thirdweb-dev/react": "^3.14.22",
     "assert": "^2.0.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.0.2",
