@@ -28,7 +28,13 @@ describe("Certification System Smart Contract Test", function () {
 
   it("should allow a new user to register", async function () {
     const userName = "Muhammad";
-    await certificationSystem.connect(user1).register_yourself(userName);
+    const tx = await certificationSystem
+      .connect(user1)
+      .register_yourself(userName);
+
+    const gasUsed = (await tx.wait()).gasUsed;
+    const gasPriceEth = ethers.formatEther(gasUsed.toString(), "gwei");
+    console.log(`Gas fees for register_yourself: ${gasPriceEth} ETH`);
   });
 
   it("should not allow the owner to register", async function () {
@@ -56,7 +62,13 @@ describe("Certification System Smart Contract Test", function () {
     const instituteName = "ABC Institute";
     await certificationSystem.connect(user1).register_yourself(userName);
 
-    await certificationSystem.connect(user1).become_provider(instituteName);
+    const tx = await certificationSystem
+      .connect(user1)
+      .become_provider(instituteName);
+
+    const gasUsed = (await tx.wait()).gasUsed;
+    const gasPriceEth = ethers.formatEther(gasUsed.toString(), "gwei");
+    console.log(`Gas fees for become_provider: ${gasPriceEth} ETH`);
   });
 
   it("should not allow a non-registered user to become a provider", async function () {
@@ -95,7 +107,7 @@ describe("Certification System Smart Contract Test", function () {
     const courseName = "Blockchain Basics";
     const skills = ["Solidity", "Blockchain", "Smart Contracts"];
     const certificateUrl = "https://example.com/certificate";
-    await certificationSystem
+    const tx = await certificationSystem
       .connect(user1)
       .issue_certificate(courseName, skills, certificateUrl, user2.address);
 
@@ -116,6 +128,10 @@ describe("Certification System Smart Contract Test", function () {
     // Check if the certificate is issued correctly
     expect(certificateUrls[0]).to.equal(certificateUrl);
     expect(status).to.equal(1); // user_status.Certified
+
+    const gasUsed = (await tx.wait()).gasUsed;
+    const gasPriceEth = ethers.formatEther(gasUsed.toString(), "gwei");
+    console.log(`Gas fees for issue_certificate: ${gasPriceEth} ETH`);
   });
 
   it("should not allow a provider to issue a certificate to the contract owner", async function () {
@@ -181,6 +197,36 @@ describe("Certification System Smart Contract Test", function () {
   });
 
   //   // /////////////////////////////////////////////////////////////// send_certificate() function tests
+
+  it("Should send a certificate", async function () {
+    const name = "John Doe";
+    const name2 = "John";
+    const instituteName = "ABC Institute";
+    await certificationSystem.connect(user1).register_yourself(name);
+    await certificationSystem.connect(user2).register_yourself(name2);
+    await certificationSystem.connect(user1).become_provider(instituteName);
+
+    const courseName = "Blockchain Basics";
+    const skills = ["Solidity", "Blockchain", "Smart Contracts"];
+    const certificateUrl = "https://example.com/certificate";
+
+    await certificationSystem
+      .connect(user1)
+      .issue_certificate(courseName, skills, certificateUrl, user2.address);
+
+    const tx = await certificationSystem
+      .connect(user2)
+      .send_certificate(user1.address, courseName);
+
+    const receivedCertificates = await certificationSystem
+      .connect(user1)
+      .get_received_Certificates();
+    expect(receivedCertificates._course_names[0]).to.equal(courseName);
+
+    const gasUsed = (await tx.wait()).gasUsed;
+    const gasPriceEth = ethers.formatEther(gasUsed.toString(), "gwei");
+    console.log(`Gas fees for send_certificate: ${gasPriceEth} ETH`);
+  });
 
   it("should not allow sending a certificate to an unregistered user", async function () {
     // Register a user and become a provider
@@ -290,6 +336,10 @@ describe("Certification System Smart Contract Test", function () {
     expect(eventData.inviter).to.equal(user1.address);
     expect(eventData.invitee).to.equal(user2.address);
     expect(eventData.message).to.equal(invitationMessage);
+
+    const gasUsed = (await tx.wait()).gasUsed;
+    const gasPriceEth = ethers.formatEther(gasUsed.toString(), "gwei");
+    console.log(`Gas fees for invite_others: ${gasPriceEth} ETH`);
   });
 
   //   // /////////////////////////////////////////////////////////////// get_received_Certificates() function tests
