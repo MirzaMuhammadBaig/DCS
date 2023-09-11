@@ -31,6 +31,10 @@ contract certification_system is Ownable {
     struct certificate_detail {
         uint256 issue_date;
         string course_name;
+        string institute_name;
+        address taker_address;
+        address giver_address;
+        user_status _user_status;
         string[] skills;
         string certificate_url;
     }
@@ -38,11 +42,7 @@ contract certification_system is Ownable {
     struct fix_certificate_detail {
         string candidiate_name;
         string providerName;
-        string instituteName;
         uint256 user_id;
-        address taker_address;
-        address giver_address;
-        user_status _user_status;
     }
 
     struct user_certified_send_data {
@@ -182,6 +182,10 @@ contract certification_system is Ownable {
         certificate_detail memory NewCertificate2 = certificate_detail({
             issue_date: block.timestamp,
             course_name: _course_name,
+            institute_name: providers_details[msg.sender].instituteName,
+            taker_address: _taker_address,
+            giver_address:  providers_details[msg.sender].providerAddress,
+            _user_status: user_status.Certified,
             skills: course_Names_skills[msg.sender][_course_name].skills,
             certificate_url: _certificate_url
         });
@@ -194,16 +198,16 @@ contract certification_system is Ownable {
         fixUserCertificates[_taker_address].providerName = providers_details[
             msg.sender
         ].providerName;
-        fixUserCertificates[_taker_address].instituteName = providers_details[
-            msg.sender
-        ].instituteName;
+        // fixUserCertificates[_taker_address].instituteName = providers_details[
+        //     msg.sender
+        // ].instituteName;
         fixUserCertificates[_taker_address].user_id = check_user_register_data[
             _taker_address
         ].user_id;
-        fixUserCertificates[_taker_address].giver_address = msg.sender;
-        fixUserCertificates[_taker_address].taker_address = _taker_address;
-        fixUserCertificates[_taker_address]._user_status = user_status
-            .Certified;
+        // fixUserCertificates[_taker_address].giver_address = msg.sender;
+        // fixUserCertificates[_taker_address].taker_address = _taker_address;
+        // fixUserCertificates[_taker_address]._user_status = user_status
+        //     .Certified;
 
         _is_user_certified[_taker_address][_course_name]
             .course_name = _course_name;
@@ -324,12 +328,12 @@ contract certification_system is Ownable {
             uint256 user_id,
             uint256[] memory issueDates,
             string[] memory courseNames,
-            string memory instituteName,
+            string[] memory instituteName,
             string[][] memory _skills,
             string[] memory certificateUrls,
-            address takerAddress,
-            address giverAddress,
-            user_status status
+            address[] memory takerAddress,
+            address[] memory giverAddress,
+            user_status[] memory status
         )
     {
         certificate_detail[] storage userCertificatesArray = userCertificates[
@@ -340,16 +344,20 @@ contract certification_system is Ownable {
         user_id = fixUserCertificates[_user_address].user_id;
         issueDates = new uint256[](userCertificatesArray.length);
         courseNames = new string[](userCertificatesArray.length);
-        instituteName = fixUserCertificates[_user_address].instituteName;
+        instituteName = new string[](userCertificatesArray.length);
         _skills = new string[][](userCertificatesArray.length);
         certificateUrls = new string[](userCertificatesArray.length);
-        takerAddress = fixUserCertificates[_user_address].taker_address;
-        giverAddress = fixUserCertificates[_user_address].giver_address;
-        status = fixUserCertificates[_user_address]._user_status;
+        takerAddress = new address[](userCertificatesArray.length);
+        giverAddress = new address[](userCertificatesArray.length);
+        status = new user_status[](userCertificatesArray.length);
 
         for (uint256 i = 0; i < userCertificatesArray.length; i++) {
             issueDates[i] = userCertificatesArray[i].issue_date;
             courseNames[i] = userCertificatesArray[i].course_name;
+            instituteName[i] = userCertificatesArray[i].institute_name;
+            takerAddress[i] = userCertificatesArray[i].taker_address;
+            giverAddress[i] = userCertificatesArray[i].giver_address;
+            status[i] = userCertificatesArray[i]._user_status;
             _skills[i] = userCertificatesArray[i].skills;
             certificateUrls[i] = userCertificatesArray[i].certificate_url;
         }
@@ -494,4 +502,3 @@ contract certification_system is Ownable {
         return b;
     }
 }
-
