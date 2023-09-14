@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { ethers } from "ethers";
 
-
 function CheckUserCert() {
   const [certificateDetails, setCertificateDetails] = useState(null);
 
   const contractAddress = require("../../contract/abi.json");
-  
+
   const contractABI = require("../../contract/abi.json");
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const contract = new ethers.Contract(
@@ -36,7 +35,7 @@ function CheckUserCert() {
           .get_user_certificates(address);
 
         setCertificateDetails(certificateData);
-        console.log(certificateDetails);
+
       } else {
         alert("Please connect to a wallet.");
       }
@@ -66,8 +65,8 @@ function CheckUserCert() {
             <div class="card-body">
               <h3 class="card-title">Get Certificate Holder Details</h3>
               <p class="card-text mt-4">
-                You can get details of certificate of any certified user from his
-                address.
+                You can get details of certificate of any certified user from
+                his address.
               </p>
               <form onSubmit={handleFormSubmit}>
                 <div className="row g-3">
@@ -124,19 +123,27 @@ function CheckUserCert() {
                 </p>
                 <p>
                   <span className="fw-bold">Insititute Name: </span>
-                  {certificateDetails[4]}
+                  {`${certificateDetails[4].join(" , ")}`}
                 </p>
                 <p>
                   <span className="fw-bold">Skills: </span>
                   {certificateDetails[5].join(" , ")}
                 </p>
+
                 <p>
                   <span className="fw-bold">Issue Date: </span>
-                  {convertToRealTime(certificateDetails[2])}
+                  {certificateDetails[2].map((date) => (
+                    <span>{`${convertToRealTime(date)}, `}</span>
+                  ))}
                 </p>
+
                 <p>
                   <span className="fw-bold">Certification Status: </span>
-                  {certificateDetails[9] === 1 ? "Certified" : "Not Certified"}
+                  {certificateDetails[9].map((date) => (
+                    <span>
+                      {date === 1 ? "Certified , " : "Not Certified , "}
+                    </span>
+                  ))}
                 </p>
 
                 <p>
@@ -156,14 +163,12 @@ function CheckUserCert() {
 
                 <p>
                   <span className="fw-bold">Holder Address: </span>
-                  {certificateDetails[7]}
+                  {certificateDetails[7].join(" , ")}
                 </p>
                 <p>
                   <span className="fw-bold">Issuer Address: </span>
-                  {certificateDetails[8]}
+                  {certificateDetails[8].join(" , ")}
                 </p>
-
-                
               </div>
             ) : (
               <p></p>

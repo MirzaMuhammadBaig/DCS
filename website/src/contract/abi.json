@@ -1,5 +1,5 @@
 {
-"address" : "0x9e301cF765f25F1A7baC924e2BE07a564e7ADB76",
+"address" : "0x128Fe8d63f085557728a3e68Be402cD189C517dE",
   "abi": [
 	{
 		"inputs": [
@@ -309,9 +309,9 @@
 				"type": "string[]"
 			},
 			{
-				"internalType": "string",
+				"internalType": "string[]",
 				"name": "instituteName",
-				"type": "string"
+				"type": "string[]"
 			},
 			{
 				"internalType": "string[][]",
@@ -324,19 +324,19 @@
 				"type": "string[]"
 			},
 			{
-				"internalType": "address",
+				"internalType": "address[]",
 				"name": "takerAddress",
-				"type": "address"
+				"type": "address[]"
 			},
 			{
-				"internalType": "address",
+				"internalType": "address[]",
 				"name": "giverAddress",
-				"type": "address"
+				"type": "address[]"
 			},
 			{
-				"internalType": "enum certification_system.user_status",
+				"internalType": "enum certification_system.user_status[]",
 				"name": "status",
-				"type": "uint8"
+				"type": "uint8[]"
 			}
 		],
 		"stateMutability": "view",

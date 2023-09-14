@@ -39,14 +39,18 @@ function GiveCert() {
     const form_data = new FormData();
     form_data.append("file", file);
 
+    // pinata_api_key: "c3137cb993709c8b676b",
+    // pinata_secret_api_key:
+    //   "04fa8f75276ea59b39c5eb16ec2b5f9fb3b122d1568f94f6530e47adc686ca50",
+
+    // pinata_api_key: "867f448b2339066a900f",
+    // pinata_secret_api_key:
+    //   "619d4d54f8b5d57c8836aa50c4552700383a1676a756596918eea1487c90a345",
     try {
       const headers = {
-        // pinata_api_key: "c3137cb993709c8b676b",
-        // pinata_secret_api_key:
-        //   "04fa8f75276ea59b39c5eb16ec2b5f9fb3b122d1568f94f6530e47adc686ca50",
-        pinata_api_key: "867f448b2339066a900f",
+        pinata_api_key: "b442323ecdd1b007f80e",
         pinata_secret_api_key:
-          "619d4d54f8b5d57c8836aa50c4552700383a1676a756596918eea1487c90a345",
+          "835b7748430611d574a715fb56cdf7e42ccbba26f8bbb735915d56747b8ef432",
       };
 
       const axiosInstance = axios.create({
