@@ -14,13 +14,13 @@ contract certification_system is Ownable {
         Certified
     }
 
-    struct providers_data {
+    struct Providers_data {
         string providerName;
         string instituteName;
         address providerAddress;
     }
 
-    struct provider_certificate_data {
+    struct Provider_certificate_data {
         string course_name;
         string institute_name;
         string provider_name;
@@ -28,7 +28,7 @@ contract certification_system is Ownable {
         string[] skills;
     }
 
-    struct certificate_detail {
+    struct Certificate_detail {
         uint256 issue_date;
         string course_name;
         string institute_name;
@@ -39,25 +39,25 @@ contract certification_system is Ownable {
         string certificate_url;
     }
 
-    struct fix_certificate_detail {
+    struct Fix_certificate_detail {
         string candidiate_name;
         string providerName;
         uint256 user_id;
     }
 
-    struct user_certified_send_data {
+    struct User_certified_send_data {
         string course_name;
         string certificate_url;
         user_status _user_status;
     }
 
-    struct invitations_data {
+    struct Invitations_data {
         address sended_address;
         string course_name;
         string certificate_url;
     }
 
-    struct user_register_data {
+    struct User_register_data {
         address user_address;
         string user_name;
         uint256 user_id;
@@ -69,17 +69,17 @@ contract certification_system is Ownable {
     uint256 private user_registered_count;
 
     // Mappings
-    mapping(address => provider_certificate_data[])
+    mapping(address => Provider_certificate_data[])
         private provider_certificates_details;
-    mapping(address => providers_data) private providers_details;
-    mapping(address => user_register_data) private check_user_register_data;
-    mapping(address => certificate_detail[]) private userCertificates;
-    mapping(address => fix_certificate_detail) private fixUserCertificates;
-    mapping(address => mapping(string => user_certified_send_data))
+    mapping(address => Providers_data) private providers_details;
+    mapping(address => User_register_data) private check_user_register_data;
+    mapping(address => Certificate_detail[]) private userCertificates;
+    mapping(address => Fix_certificate_detail) private fixUserCertificates;
+    mapping(address => mapping(string => User_certified_send_data))
         private _is_user_certified;
-    mapping(address => mapping(string => provider_certificate_data))
+    mapping(address => mapping(string => Provider_certificate_data))
         private course_Names_skills;
-    mapping(address => invitations_data[]) private certificateInvitations;
+    mapping(address => Invitations_data[]) private certificateInvitations;
 
     // Events
     event CertificateIssued(
@@ -139,8 +139,8 @@ contract certification_system is Ownable {
             "This user is already certified in this course."
         );
 
-        provider_certificate_data
-            memory newCertificate = provider_certificate_data({
+        Provider_certificate_data
+            memory newCertificate = Provider_certificate_data({
                 course_name: _course_name,
                 institute_name: providers_details[msg.sender].instituteName,
                 provider_name: providers_details[msg.sender].providerName,
@@ -179,7 +179,7 @@ contract certification_system is Ownable {
 
             skills = combinedSkills;
 
-        certificate_detail memory NewCertificate2 = certificate_detail({
+        Certificate_detail memory NewCertificate2 = Certificate_detail({
             issue_date: block.timestamp,
             course_name: _course_name,
             institute_name: providers_details[msg.sender].instituteName,
@@ -271,7 +271,7 @@ contract certification_system is Ownable {
             "You are not certified in this course."
         );
 
-        invitations_data memory userCertificate = invitations_data({
+        Invitations_data memory userCertificate = Invitations_data({
             sended_address: msg.sender,
             course_name: _course_name,
             certificate_url: _is_user_certified[msg.sender][_course_name]
@@ -336,7 +336,7 @@ contract certification_system is Ownable {
             user_status[] memory status
         )
     {
-        certificate_detail[] storage userCertificatesArray = userCertificates[
+        Certificate_detail[] storage userCertificatesArray = userCertificates[
             _user_address
         ];
 
